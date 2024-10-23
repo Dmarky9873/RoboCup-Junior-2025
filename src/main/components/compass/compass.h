@@ -1,27 +1,41 @@
-struct Compass {
+#include "components.h"
+
+#ifndef COMPASS_H
+#define COMPASS_H
+
+class Compass : public Component {
+public:
+  /**
+   * Constructor, sets private variables to params.
+   *
+   * @param `pin_` pin for spin.
+   * @param `dir_pin_` pin for direction.
+   * @param `brake_pin_` pin for brake.
+   */
+  Compass(int pin_numbers[], uint8_t modes[], int number_of_pins, String component_name);
+
+  /**
+   * Initialize pins to Adafruit_BNO055
+   */
+  void initialize();
+
+  /**
+   * Returns absolute (max 180 degrees) x-axis angle 
+   */
+  float readCompass();
+
+  /**
+   * Returns true if `x` is between `lower` and `upper` degrees 
+   */
+  boolean isBetween(int lower, int upper, int x);
+
+  /**
+   * Returns true if robot is pointing north 
+   */
+  boolean isNorth();
+
+
+private: 
   Adafruit_BNO055 bno;
 
-  void initialize() {
-    bno = Adafruit_BNO055(55, 0x28, &Wire2);
-    if (!bno.begin()) {
-      Serial.println("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
-      while(1);
-    }
-    bno.setExtCrystalUse(true);
-  }
-
-  float readCompass() {
-    sensors_event_t event;
-    bno.getEvent(&event);
-    int angle = event.orientation.x;
-    return (angle > 180) ? angle - 360 : angle;
-  }
-
-  boolean isBetween(int lower, int upper, int x) {
-    return lower < x && x < upper;
-  }
-
-  boolean isNorth() {
-    return isBetween(COMPASS_BUFF * -1, COMPASS_BUFF, readCompass());
-  }
 };
