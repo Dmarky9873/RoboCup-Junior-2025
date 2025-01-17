@@ -1,9 +1,12 @@
-void setup() {
-  // put your setup code here, to run once:
+#include "components/motor/motor.h"
+#include "components/motor/motor.cpp"
 
+Motor motor_FR(5, 4);
+
+void setup() {
+  Serial.begin(9600);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  motor_FR.spin(200);
 }

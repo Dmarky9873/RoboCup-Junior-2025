@@ -1,41 +1,34 @@
 #include <Adafruit_BNO055.h>
-#include "components.h"
 
 #ifndef MOTOR_H
 #define MOTOR_H
 
-class Motor : public Component
+class Motor
 {
 public:
   /**
-   * Constructor, sets private variables to params.
+   * Initializes the motor pins to be used.
    *
-   * @param `pin_numbers[]` integer array of pin-numbers that relate to an instance of the component class.
-   * @param `modes[]` integer array where modes[n] is the mode for pin_numbers[n].
-   * @param `number_of_pins` number of elements in the modes[] and pin_numbers[] arrays.
-   * @param `component_name` name of this component as a string.
-   *
-   * @param `pin_` pin for spin.
-   * @param `dir_pin_` pin for direction.
-   * @param `brake_pin_` pin for brake.
+   * @param `pin_c` the pin that, when held high and the other held low, roatates the motor clockwise.
+   * @param `pin_cc` the pin that, when held high and the other held low, roatates the motor counter-clockwise.
    */
-  Motor(int pin_numbers[], uint8_t modes[], int number_of_pins, String component_name,
-        unsigned int spin_pin_, unsigned int dir_pin_, unsigned int brake_pin_);
+  Motor(unsigned int pin_c, unsigned int pin_cc);
 
   /**
-   * Sets the speed and direction of a motor
-   *
-   * @param `s` speed of the motor (negative value indicates backwards direction).
+   * Spins the wheel at a certain speed. If the integer for speed that is given is > 0, the wheel will spin clockwise. If the opposite, the wheel will spin counter-clockwise.
    */
-  void spin(int s);
+  void spin(int speed);
 
   /**
-   * Stops the spin of the wheel; brake
+   * Stops the spin of the wheel; brakes it.
    */
   void brake();
 
 private:
-  unsigned int spin_pin;
-  unsigned int dir_pin;
-  unsigned int brake_pin;
+  unsigned int pin_c;
+  unsigned int pin_cc;
+  int speed;
+  bool is_breaking;
 };
+
+#endif
