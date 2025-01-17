@@ -1,18 +1,10 @@
 #include "camera.h"
-
-Camera pixyCam;
+Camera camera(70.0);  // Instantiate Camera with a 70-degree field of view
 
 void setup() {
-  Serial.begin(9600);
+    camera.initialize();
 }
 
 void loop() {
-  String direction = pixyCam.getObjectDirection();
-  float angleToRotate = pixyCam.getRotationDistance();
-  Serial.print("Angle to Rotate: ");
-  Serial.print(angleToRotate);
-  Serial.println(" degrees");
-  Serial.println("Direction: " + direction);
-
-  delay(100);
+    camera.printStatus();
 }
