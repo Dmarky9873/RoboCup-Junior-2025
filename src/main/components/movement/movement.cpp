@@ -1,4 +1,5 @@
 #include "movement.h"
+#include <math.h>
 
 void Movement::initMovement() {
   compass.initialize();
@@ -40,8 +41,24 @@ void Movement::move(double theta, int maxSpeed) {
     maxSpeed * sin(((theta + 90 - 40) * M_PI) / 180)  // TL
   };
 
-  motor_FR.spin(speeds[0]);
-  motor_BR.spin(speeds[1]);
-  motor_BL.spin(speeds[2]);
-  motor_FL.spin(speeds[3]);
+  float reading = compass.readCompass();
+
+  float spin_index = 0;
+  float a = 1.027;
+  if (!compass.isBetween(theta - COMPASS_BUFF, theta + COMPASS_BUFF, reading)) {
+    float x = abs(theta - reading);
+    if (reading + theta > theta) {
+      spin_index = -pow(a, x) - 100;
+    }
+    else {
+      spin_index = pow(a, x) - 100;
+    }
+  }g
+
+  Serial.println(spin_index);
+
+  motor_FR.spin(speeds[0] + spin_index);
+  motor_BR.spin(speeds[1] + spin_index);
+  motor_BL.spin(speeds[2] + spin_index);
+  motor_FL.spin(speeds[3] + spin_index);
 }
