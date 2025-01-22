@@ -1,18 +1,19 @@
-#include "/"
+#ifndef IR_H
+#define IR_H
 
-class IR : public Component {
-public:
+class IR {
+  public:
 
-  template <typename T, size_t N>
-  size_t arrayLength(const T (&)(N));
-  int* getReadingsArr();
+    template <typename T, size_t N>
+    size_t arrayLength(const T (&)(N));
+    int* getReadingsArr();
 
-  double* getPWsArr();
+    double* getPWsArr();
 
-  void printReadingsArr();
-  void printPWsArr();
+    void printReadingsArr();
+    void printPWsArr();
 
-  void initIR();
+    void initIR();
 
   /* 
 
@@ -26,3 +27,5 @@ public:
 
 
 }
+
+#endif

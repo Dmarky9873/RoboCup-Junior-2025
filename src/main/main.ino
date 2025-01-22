@@ -1,12 +1,12 @@
-#include "components/motor/motor.h"
-#include "components/motor/motor.cpp"
+#include "components/movement/movement.cpp"
 
-Motor motor_FR(5, 4);
+Movement movement;
 
 void setup() {
   Serial.begin(9600);
+  movement.initMovement();
 }
 
 void loop() {
-  motor_FR.spin(200);
+  movement.rotateTo(0, 50);
 }

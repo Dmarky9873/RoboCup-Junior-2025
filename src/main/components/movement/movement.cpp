@@ -1,90 +1,47 @@
 #include "movement.h"
 
-Movement::initMotor() {
+void Movement::initMovement() {
   compass.initialize();
 }
 
-Movement::rotate(int speed) {
-  for (int i = 0; i < 4; i++) {
-    motors[i].spin(speed);
-  }
+void Movement::brake() {
+  motor_FR.brake();
+  motor_BR.brake();
+  motor_BL.brake();
+  motor_FL.brake();
 }
 
-Movement::brake() {
-  for (int i = 0; i < 4; i++) {
-    motors[i].brake();
-  }
+void Movement::rotate(int speed) {
+  motor_FR.spin(speed);
+  motor_BR.spin(speed);
+  motor_BL.spin(speed);
+  motor_FL.spin(speed);
 }
 
-Movement::pointNorth(int baseSpeed) {
-  int speed = 0;
-  while (!compass.isBetween(COMPASS_BUFF * -1, COMPASS_BUFF, compass.readCompass())) {
-    speed = baseSpeed - abs(abs(compass.readCompass()) - COMPASS_BUFF) * 0.3;
-    rotate((compass.readCompass() > 0) ? speed : -speed);
+void Movement::rotateTo(int degrees, int speed) {
+  float reading = compass.readCompass();
+  while(!compass.isBetween(degrees - COMPASS_BUFF, degrees + COMPASS_BUFF, reading)) {
+    if (reading + degrees > degrees) {
+      rotate(-speed);
+    }
+    else {
+      rotate(speed);
+    }
+    reading = compass.readCompass();
   }
   brake();
 }
 
-Movement::moveNorth(unsigned int speed) {
-  pointNorth(220);
-  motors[0].spin(speed);
-  motors[1].spin(speed);
-  motors[2].spin(-speed);
-  motors[3].spin(-speed);
-}
+void Movement::move(double theta, int maxSpeed) {
+  double speeds[4] = {
+    maxSpeed * sin(((theta - 90 + 40) * M_PI) / 180), // TR
+    maxSpeed * sin(((theta - 90 - 40) * M_PI) / 180), // BR
+    maxSpeed * sin(((theta + 90 + 40) * M_PI) / 180), // BL
+    maxSpeed * sin(((theta + 90 - 40) * M_PI) / 180)  // TL
+  };
 
-Movement::moveSouth(unsigned int speed) {
-  pointNorth(220);
-  motors[0].spin(-speed);
-  motors[1].spin(-speed);
-  motors[2].spin(speed);
-  motors[3].spin(speed);
-}
-
-Movement::moveEast(unsigned int speed) {
-  pointNorth(220);
-  motors[0].spin(speed);
-  motors[1].spin(-speed);
-  motors[2].spin(-speed);
-  motors[3].spin(speed);
-}
-
-Movement::moveWest(unsigned int speed) {
-  pointNorth(220);
-  motors[0].spin(-speed);
-  motors[1].spin(speed);
-  motors[2].spin(speed);
-  motors[3].spin(-speed);
-}
-
-Movement::moveNorthEast(unsigned int speed) {
-  pointNorth(220);
-  motors[0].spin(speed);
-  motors[1].brake();
-  motors[2].spin(-speed);
-  motors[3].brake();
-}
-
-Movement::moveNorthWest(unsigned int speed) {
-  pointNorth(220);
-  motors[0].brake();
-  motors[1].spin(speed);
-  motors[2].brake();
-  motors[3].spin(-speed);
-}
-
-Movement::moveSouthEast(unsigned int speed) {
-  pointNorth(220);
-  motors[0].brake();
-  motors[1].spin(-speed);
-  motors[2].brake();
-  motors[3].spin(speed);
-}
-
-Movement::moveSouthWest(unsigned int speed) {
-  pointNorth(220);
-  motors[0].spin(-speed);
-  motors[1].brake();
-  motors[2].spin(speed);
-  motors[3].brake();
+  motor_FR.spin(speeds[0]);
+  motor_BR.spin(speeds[1]);
+  motor_BL.spin(speeds[2]);
+  motor_FL.spin(speeds[3]);
 }

@@ -1,35 +1,30 @@
+#ifndef MOVEMENT_H
+#define MOVEMENT_H
+
+#include "../motor/motor.cpp"
+#include "../compass/compass.cpp"
+
 class Movement {
 
   public:
-    void initMotor();
 
-    void rotate(int speed);
+    void initMovement();
 
     void brake();
 
-    void pointNorth(int baseSpeed);
+    void rotateTo(int degrees, int speed);
 
-    void moveNorth(unsigned int speed);
-
-    void moveSouth(unsigned int speed);
-
-    void moveEast(unsigned int speed);
-
-    void moveWest(unsigned int speed);
-
-    void moveNorthEast(unsigned int speed);
-
-    void moveNorthWest(unsigned int speed);
-
-    void moveSouthEast(unsigned int speed);
-
-    void moveSouthWest(unsigned int speed);
+    void move(double theta, int maxSpeed);
     
   private:
-    Motor motor_0{1, 3, 2};
-    Motor motor_1{7, 9, 8};
-    Motor motor_2{28, 35, 29};
-    Motor motor_3{4, 6, 5};
-    Motor motors[4];
+    void rotate(int speed);
+
+    Motor motor_FR{5, 4};
+    Motor motor_BR{6, 7};
+    Motor motor_BL{1, 0};
+    Motor motor_FL{2, 3};
     Compass compass;
+    const unsigned int COMPASS_BUFF = 13;
 };
+
+#endif

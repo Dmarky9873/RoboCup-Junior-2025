@@ -1,12 +1,12 @@
 #include "IR.h"
 
-IR::initIR() {
+void IR::initIR() {
   for (unsigned int i = 0; i < arrayLength(pins); i++) {
     pinMode(pins[i], INPUT);
   }
 }
 
-IR::getReadingsArr() {
+int* IR::getReadingsArr() {
   int* pinReadings = new int[NUM_IR_PINS];
   double reading;
   for (unsigned int i = 0; i < arrayLength(pins); i++) {
@@ -21,7 +21,7 @@ IR::getReadingsArr() {
   return pinReadings;
 }
 
-IR::getPWsArr() {
+double* IR::getPWsArr() {
   double* pinReadings = new double[NUM_IR_PINS];
   for (unsigned int i = 0; i < arrayLength(pins); i++) {
     pinReadings[i] = pulseIn(pins[i], HIGH, 500);
@@ -29,7 +29,7 @@ IR::getPWsArr() {
   return pinReadings;
 }
 
-IR::printReadingsArr() {
+void IR::printReadingsArr() {
   int* arr = getReadingsArr();
   Serial.print("[ ");
   for(int i = 0; i < NUM_IR_PINS; i++) {
@@ -39,7 +39,7 @@ IR::printReadingsArr() {
   Serial.println("]");
 }
 
-IR::printPWsArr() {
+void IR::printPWsArr() {
   double* arr = getPWsArr();
   Serial.print("[ ");
   for(int i = 0; i < NUM_IR_PINS; i++) {
