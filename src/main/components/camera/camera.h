@@ -87,6 +87,15 @@ public:
     String direction = detectDirection();
     Serial.print("Direction: ");
     Serial.println(direction);
+    Serial.print("Signature Name:");
+    if(pixy.ccc.blocks[0].m_signature == 1){
+      Serial.println("Yellow Goal");
+    }
+    if(pixy.ccc.blocks[0].m_signature == 2){
+      Serial.println("Blue Goal");
+    }
+    
+
 
     if (direction != "NO BLOCKS")
     {
