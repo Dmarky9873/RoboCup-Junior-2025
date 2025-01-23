@@ -33,7 +33,7 @@ void Movement::rotate(int speed) {
 //   brake();
 // }
 
-void Movement::rotateTo(int degrees, int speed) {
+void Movement::rotateTo(int degrees) {
   float reading = compass.readCompass();
 
   float spin_index = 0;

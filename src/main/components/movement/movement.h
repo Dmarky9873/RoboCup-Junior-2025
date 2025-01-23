@@ -12,7 +12,7 @@ class Movement {
 
     void brake();
 
-    void rotateTo(int degrees, int speed);
+    void rotateTo(int degrees);
 
     void move(double theta, int maxSpeed);
     
