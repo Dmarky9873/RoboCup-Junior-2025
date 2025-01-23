@@ -15,15 +15,17 @@ class Movement {
     void rotateTo(int degrees);
 
     void move(double theta, int maxSpeed);
+
+    float read();
     
   private:
     void rotate(int speed);
 
+    Compass compass;
     Motor motor_FR{5, 4};
     Motor motor_BR{6, 7};
     Motor motor_BL{1, 0};
     Motor motor_FL{2, 3};
-    Compass compass;
     const unsigned int COMPASS_BUFF = 20;
 };
 

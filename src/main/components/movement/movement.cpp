@@ -70,6 +70,10 @@ void Movement::rotateTo(int degrees) {
   motor_FL.spin(spin_index);
 }
 
+float Movement::read() {
+  return compass.readCompass();
+}
+
 void Movement::move(double theta, int maxSpeed) {
   double speeds[4] = {
     maxSpeed * sin(((theta - 90 + 40) * M_PI) / 180),  // TR
@@ -82,15 +86,14 @@ void Movement::move(double theta, int maxSpeed) {
 
   float spin_index = 0;
 
+  float spin_index_dampner = 0.70;
+
   double a = 0.07;
-  double b = -110;
-  double c = 60;
+  double b = -90;
   double d = 40;
+  double c = maxSpeed*spin_index_dampner - d;
   double e = 2.71828;
   double x = abs(theta - reading);
-
-  Serial.println((c / (1 + pow(e, -a * (x + b)))));
-
 
   if (!compass.isBetween(theta - COMPASS_BUFF, theta + COMPASS_BUFF, reading)) {
     if (reading + theta > theta) {
@@ -108,8 +111,10 @@ void Movement::move(double theta, int maxSpeed) {
   Serial.print(" | compass reading: ");
   Serial.println(reading);
 
-  motor_FR.spin(speeds[0] + maxSpeed * (spin_index/255));
-  motor_BR.spin(speeds[1] + maxSpeed * (spin_index/255));
-  motor_BL.spin(speeds[2] + maxSpeed * (spin_index/255));
-  motor_FL.spin(speeds[3] + maxSpeed * (spin_index/255));
+  // Serial.println(map(speeds[0] + spin_index, 0, 300, 0, maxSpeed));
+
+  motor_FR.spin(map(speeds[0] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
+  motor_BR.spin(map(speeds[1] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
+  motor_BL.spin(map(speeds[2] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
+  motor_FL.spin(map(speeds[3] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
 }

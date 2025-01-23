@@ -9,7 +9,12 @@ void setup() {
 
 void loop() {
   // movement.rotateTo(0);
-  movement.move(0, 150);
+  // movement.move(0, 150);
+  // delay(1500);
+  float reading = movement.read(); 
+  Serial.println(180 - abs(reading));
+  movement.move(180 - reading, 150);
+  // delay(1500);
   // delay(500);
   // movement.brake();
   // delay(500);
