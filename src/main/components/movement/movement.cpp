@@ -108,8 +108,8 @@ void Movement::move(double theta, int maxSpeed) {
   Serial.print(" | compass reading: ");
   Serial.println(reading);
 
-  motor_FR.spin(speeds[0] + spin_index);
-  motor_BR.spin(speeds[1] + spin_index);
-  motor_BL.spin(speeds[2] + spin_index);
-  motor_FL.spin(speeds[3] + spin_index);
+  motor_FR.spin(speeds[0] + maxSpeed * (spin_index/255));
+  motor_BR.spin(speeds[1] + maxSpeed * (spin_index/255));
+  motor_BL.spin(speeds[2] + maxSpeed * (spin_index/255));
+  motor_FL.spin(speeds[3] + maxSpeed * (spin_index/255));
 }
