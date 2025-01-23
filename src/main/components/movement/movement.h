@@ -24,7 +24,7 @@ class Movement {
     Motor motor_BL{1, 0};
     Motor motor_FL{2, 3};
     Compass compass;
-    const unsigned int COMPASS_BUFF = 13;
+    const unsigned int COMPASS_BUFF = 20;
 };
 
 #endif

@@ -8,8 +8,8 @@ void setup() {
 }
 
 void loop() {
-  // movement.rotateTo(0, 50);
-  movement.move(20, 100);
+  // movement.rotateTo(0, 10);
+  movement.move(0, 100);
   // delay(500);
   // movement.brake();
   // delay(500);
