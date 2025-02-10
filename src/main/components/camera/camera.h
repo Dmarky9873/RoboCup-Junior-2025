@@ -8,8 +8,13 @@ private:
   float fov;  // Field of View
   int32_t frameWidth;
 
+<<<<<<< Updated upstream
   const float knownWidth = 200.0;    // Object's real-world width in mm
   const float focalLength = 149.22;  // Effective focal length in pixels
+=======
+  const float knownWidth = 200.0;
+  const float focalLength = 149.22;
+>>>>>>> Stashed changes
 
 public:
   Camera(float fieldOfView, int32_t threshold = 50)
@@ -18,14 +23,22 @@ public:
   void initialize() {
     Serial.begin(115200);
     pixy.init();
+<<<<<<< Updated upstream
     frameWidth = pixy.frameWidth;  // Assume Pixy2 has this member or define manually
+=======
+    frameWidth = pixy.frameWidth;
+>>>>>>> Stashed changes
     centerX = frameWidth / 2;
   }
 
   String detectDirection() {
     pixy.ccc.getBlocks();
     if (pixy.ccc.numBlocks > 0) {
+<<<<<<< Updated upstream
       int32_t midX = pixy.ccc.blocks[0].m_x;  // X position of the first block
+=======
+      int32_t midX = pixy.ccc.blocks[0].m_x;
+>>>>>>> Stashed changes
       if (midX > centerX - middleThreshold && midX < centerX + middleThreshold) {
         return "CENTER";
       } else if (midX < centerX) {
@@ -37,6 +50,7 @@ public:
     return "NO BLOCKS";
   }
 
+<<<<<<< Updated upstream
   float calculateRotationDistance() {
     if (pixy.ccc.numBlocks > 0) {
       int32_t midX = pixy.ccc.blocks[0].m_x;  // X position of the first block
@@ -54,6 +68,16 @@ public:
       }
     }
     return -1.0;  // Return -1 if no valid block width is found
+=======
+  float calculateDistance() {
+    if (pixy.ccc.numBlocks > 0) {
+      int32_t blockWidth = pixy.ccc.blocks[0].m_width;
+      if (blockWidth > 0) {
+        return (knownWidth * focalLength) / blockWidth;
+      }
+    }
+    return -1.0;
+>>>>>>> Stashed changes
   }
 
   float calculateRotationAngle() {
@@ -63,7 +87,11 @@ public:
       float anglePerPixel = fov / frameWidth;
       return offset * anglePerPixel;  // Angle to rotate in degrees
     }
+<<<<<<< Updated upstream
     return 0.0;  // No blocks detected, no angle
+=======
+    return 0.0;
+>>>>>>> Stashed changes
   }
 
   void printStatus() {
@@ -72,7 +100,10 @@ public:
     Serial.println(direction);
 
     if (direction != "NO BLOCKS") {
+<<<<<<< Updated upstream
       // Calculate and print distance from the object
+=======
+>>>>>>> Stashed changes
       float distance = calculateDistance();
       Serial.print("Distance from Object: ");
       if (distance > 0) {
@@ -82,7 +113,6 @@ public:
         Serial.println("N/A");
       }
 
-      // Calculate and print rotation angle
       float rotationAngle = calculateRotationAngle();
       Serial.print("Rotation Angle: ");
       Serial.print(rotationAngle, 2);
