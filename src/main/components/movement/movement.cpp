@@ -70,10 +70,6 @@ void Movement::rotateTo(int degrees) {
   motor_FL.spin(spin_index);
 }
 
-float Movement::read() {
-  return compass.readCompass();
-}
-
 void Movement::move(double theta, int maxSpeed) {
   double speeds[4] = {
     maxSpeed * sin(((theta - 90 + 40) * M_PI) / 180),  // TR

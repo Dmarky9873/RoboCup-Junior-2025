@@ -15,8 +15,6 @@ class Movement {
     void rotateTo(int degrees);
 
     void move(double theta, int maxSpeed);
-
-    float read();
     
   private:
     void rotate(int speed);
