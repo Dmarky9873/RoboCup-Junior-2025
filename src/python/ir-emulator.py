@@ -1,6 +1,9 @@
 import pygame
 import math
+from reading_serial_monitor import readserial
 
+
+# pylint: disable=no-member
 pygame.init()
 
 WIDTH, HEIGHT = 600, 600
@@ -17,6 +20,22 @@ brightness_values = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8,
 
 running = True
 while running:
+
+    brightness_values = []
+
+    raw = readserial('/dev/tty.usbmodem139169701', 9600)
+
+    raw = raw[1:len(raw) - 1].split(' ')
+
+    for i, value in enumerate(raw):
+        if value != '':
+            try:
+                brightness_values.append(float(value))
+            except ValueError as e:
+                brightness_values.append(float(value[:len(value) - 2]))
+
+    print(brightness_values)
+
     screen.fill("white")
     pygame.draw.circle(screen, "black", (300, 300), 100)
     for i in range(num_circles):
@@ -25,10 +44,17 @@ while running:
         y = int(center[1] + radius * math.sin(angle))
 
         # Scale brightness (0-1) to red intensity (0-255)
-        red_intensity = int(brightness_values[i] * 255)
+        if i > len(brightness_values) - 1:
+            red_intensity = 0
+        else:
+            red_intensity = int(brightness_values[i] * 255)
         color = (red_intensity, 0, 0)  # RGB, only red varies
 
-        pygame.draw.circle(screen, color, (x, y), circle_radius)
+        try:
+            pygame.draw.circle(screen, color, (x, y), circle_radius)
+        except ValueError as e:
+            print(e)
+            print(color)
 
     pygame.display.flip()
 
