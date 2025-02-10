@@ -30,9 +30,17 @@ while running:
     for i, value in enumerate(raw):
         if value != '':
             try:
+                # Uncomment for floating point ranged values
                 brightness_values.append(float(value))
+
+                # Uncomment for rounded, on/off binary
+                brightness_values.append(round(float(value)))
             except ValueError as e:
+                # Uncomment for floating point ranged values
                 brightness_values.append(float(value[:len(value) - 2]))
+
+                # Uncomment for rounded, on/off binary
+                # brightness_values.append(round(float(value[:len(value) - 2])))
 
     print(brightness_values)
 

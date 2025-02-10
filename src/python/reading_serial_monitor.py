@@ -8,7 +8,7 @@ def readserial(comport, baudrate):
     try:
         ser = serial.Serial(comport, baudrate, timeout=0.1)
     except serial.serialutil.SerialException as _:
-        print("Lost connection to port... restart needed")
+        print("Lost connection to port... restarting")
         return "[ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]"
 
     while True:
@@ -16,6 +16,7 @@ def readserial(comport, baudrate):
         if data:
             return data
         else:
+            print("Lost connection to port... restarting")
             return "[ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]"
 
 
