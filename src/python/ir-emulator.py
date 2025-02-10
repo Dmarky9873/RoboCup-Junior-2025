@@ -1,5 +1,5 @@
-import pygame
 import math
+import pygame
 from reading_serial_monitor import readserial
 
 
