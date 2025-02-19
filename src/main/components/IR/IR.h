@@ -9,6 +9,7 @@ class IR {
     void printReadingsArr();
     void printPWsArr();
     void initIR();
+    float getBallAngle();
 
 };
 

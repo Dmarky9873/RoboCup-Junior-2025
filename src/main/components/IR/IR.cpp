@@ -1,6 +1,7 @@
 #include "IR.h"
 
 int pins[] = {23, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 16, 17, 20, 21, 22};
+float angles[] = {0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5, 180, 202.5, 225, 247.5, 270, 292.5, 3               15, 337.5};
 int NUM_IR_PINS = 16;
 
 void IR::initIR() {
@@ -49,6 +50,18 @@ float* IR::getReadingsArr() {
   }
 
   return pinReadings;
+}
+
+float IR::getBallAngle() {
+  float* arr = getReadingsArr();
+
+  for (int i = 0; i < NUM_IR_PINS; i++) {
+    if (arr[i] == 1) {
+      return angles[i];
+    }
+  }
+
+  return -1;
 }
 
 double* IR::getPWsArr() {
