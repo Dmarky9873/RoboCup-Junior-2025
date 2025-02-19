@@ -3,6 +3,7 @@
 #include "./components/movement/movement.h"
 #include "./components/movement/movement.cpp"
 
+
 Movement m;
 IR ir;
 
@@ -12,5 +13,8 @@ void setup() {
 }
 
 void loop() {
-  m.move(ir.getBallAngle(), 200);
+  // m.move(ir.getBallAngle(), 200);
+  m.move(0, 200);
+  // m.rotate(50);
+
 }

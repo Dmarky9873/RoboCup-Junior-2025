@@ -71,6 +71,11 @@ void Movement::rotateTo(int degrees) {
 }
 
 void Movement::move(double theta, int maxSpeed) {
+  if (theta == -1)
+  {
+    brake();
+    return;
+  }
   double speeds[4] = {
     maxSpeed * sin(((theta - 90 + 40) * M_PI) / 180),  // TR
     maxSpeed * sin(((theta - 90 - 40) * M_PI) / 180),  // BR
@@ -109,8 +114,12 @@ void Movement::move(double theta, int maxSpeed) {
 
   // Serial.println(map(speeds[0] + spin_index, 0, 300, 0, maxSpeed));
 
-  motor_FR.spin(map(speeds[0] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
-  motor_BR.spin(map(speeds[1] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
-  motor_BL.spin(map(speeds[2] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
-  motor_FL.spin(map(speeds[3] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
+  // motor_FR.spin(map(speeds[0] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
+  // motor_BR.spin(map(speeds[1] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
+  // motor_BL.spin(map(speeds[2] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
+  // motor_FL.spin(map(speeds[3] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
+  motor_FR.spin(200);
+  motor_BR.spin(200);
+  motor_BL.spin(-200);
+  motor_FL.spin(-200);
 }

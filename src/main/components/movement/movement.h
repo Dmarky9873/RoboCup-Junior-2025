@@ -16,8 +16,8 @@ class Movement {
 
     void move(double theta, int maxSpeed);
     
-  private:
     void rotate(int speed);
+  private:
 
     Compass compass;
     Motor motor_FR{5, 4};
