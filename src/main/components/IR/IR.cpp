@@ -1,6 +1,6 @@
 #include "IR.h"
 
-int pins[] = {23, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 16, 17, 20, 21, 22};
+int pins[] = {34, 35, 16, 17, 20, 21, 22, 23, 26, 27, 28, 29, 30, 31, 32, 33};
 float angles[] = {0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5, 180, 202.5, 225, 247.5, 270, 292.5, 315, 337.5};
 int NUM_IR_PINS = 16;
 
@@ -52,22 +52,64 @@ float* IR::getReadingsArr() {
   return pinReadings;
 }
 
+int findLongestOnesMidpoint(float arr[], int n) {
+    int maxLen = 0, maxStart = -1;
+    int curLen = 0, curStart = -1;
+    
+    // extend array to handle circularity
+    float extendedArr[2 * n];
+    for (int i = 0; i < n; i++) {
+        extendedArr[i] = arr[i];
+        extendedArr[i + n] = arr[i];
+    }
+    
+    // dind longest sequence of 1s in extended array
+    for (int i = 0; i < 2 * n; i++) {
+        if (extendedArr[i] == 1) {
+            if (curLen == 0) curStart = i;
+            curLen++;
+        } else {
+            if (curLen > maxLen) {
+                maxLen = curLen;
+                maxStart = curStart;
+            }
+            curLen = 0;
+        }
+    }
+    
+    // edge case: if last counted sequence is the longest
+    if (curLen > maxLen) {
+        maxLen = curLen;
+        maxStart = curStart;
+    }
+    
+    // find midpoint in original array
+    int midIndex = maxStart + maxLen / 2;
+    return midIndex % n;
+}
+
+
 float IR::getBallAngle() {
   float* arr = getReadingsArr();
+  float total = 0;
 
   for (int i = 0; i < NUM_IR_PINS; i++) {
-    if (arr[i] == 1) {
-      return angles[i];
-    }
+    total += arr[i];
   }
 
-  return -1;
+  if (total < 1) {
+    return -1;
+  }
+
+  int index = findLongestOnesMidpoint(arr, NUM_IR_PINS);
+
+  return angles[index];
 }
 
 double* IR::getPWsArr() {
   double* pinReadings = new double[NUM_IR_PINS];
   for (unsigned int i = 0; i < arrayLength(pins); i++) {
-    pinReadings[i] = pulseIn(pins[i], HIGH, 1000);
+    pinReadings[i] = pulseIn(pins[i], HIGH, 500);
   }
   return pinReadings;
 }

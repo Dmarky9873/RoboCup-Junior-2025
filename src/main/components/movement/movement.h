@@ -20,10 +20,10 @@ class Movement {
   private:
 
     Compass compass;
-    Motor motor_FR{5, 4};
-    Motor motor_BR{6, 7};
-    Motor motor_BL{1, 0};
-    Motor motor_FL{2, 3};
+    Motor motor_BL{4, 5}; 
+    Motor motor_FR{7, 6};
+    Motor motor_FL{0, 1};
+    Motor motor_BR{3, 2};
     const unsigned int COMPASS_BUFF = 20;
 };
 

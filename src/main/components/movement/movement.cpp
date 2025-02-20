@@ -55,14 +55,14 @@ void Movement::rotateTo(int degrees) {
       spin_index = ((c / (1 + pow(e, -a * (x + b)))) + d);
     }
   }
-  Serial.print("Spin Index: ");
-  Serial.print(spin_index);
-  Serial.print(" | |degrees - reading|: ");
-  Serial.print(x);
-  Serial.print(" | degrees: ");
-  Serial.print(degrees);
-  Serial.print(" | compass reading: ");
-  Serial.println(reading);
+  // Serial.print("Spin Index: ");
+  // Serial.print(spin_index);
+  // Serial.print(" | |degrees - reading|: ");
+  // Serial.print(x);
+  // Serial.print(" | degrees: ");
+  // Serial.print(degrees);
+  // Serial.print(" | compass reading: ");
+  // Serial.println(reading);
 
   motor_FR.spin(spin_index);
   motor_BR.spin(spin_index);
@@ -96,30 +96,26 @@ void Movement::move(double theta, int maxSpeed) {
   double e = 2.71828;
   double x = abs(theta - reading);
 
-  if (!compass.isBetween(theta - COMPASS_BUFF, theta + COMPASS_BUFF, reading)) {
-    if (reading + theta > theta) {
-      spin_index = -(c / (1 + pow(e, -a * (x + b))) + d);
-    } else {
-      spin_index = ((c / (1 + pow(e, -a * (x + b)))) + d);
-    }
-  }
-  Serial.print("Spin Index: ");
-  Serial.print(spin_index);
-  Serial.print(" | |theta - reading|: ");
-  Serial.print(x);
-  Serial.print(" | theta: ");
-  Serial.print(theta);
-  Serial.print(" | compass reading: ");
-  Serial.println(reading);
+  // if (!compass.isBetween(theta - COMPASS_BUFF, theta + COMPASS_BUFF, reading)) {
+  //   if (reading + theta > theta) {
+  //     spin_index = -(c / (1 + pow(e, -a * (x + b))) + d);
+  //   } else {
+  //     spin_index = ((c / (1 + pow(e, -a * (x + b)))) + d);
+  //   }
+  // }
+  // Serial.print("Spin Index: ");
+  // Serial.print(spin_index);
+  // Serial.print(" | |theta - reading|: ");
+  // Serial.print(x);
+  // Serial.print(" | theta: ");
+  // Serial.print(theta);
+  // Serial.print(" | compass reading: ");
+  // Serial.println(reading);
 
   // Serial.println(map(speeds[0] + spin_index, 0, 300, 0, maxSpeed));
 
-  // motor_FR.spin(map(speeds[0] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
-  // motor_BR.spin(map(speeds[1] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
-  // motor_BL.spin(map(speeds[2] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
-  // motor_FL.spin(map(speeds[3] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
-  motor_FR.spin(200);
-  motor_BR.spin(200);
-  motor_BL.spin(-200);
-  motor_FL.spin(-200);
+  motor_FR.spin(map(speeds[0] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
+  motor_BR.spin(map(speeds[1] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
+  motor_BL.spin(map(speeds[2] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
+  motor_FL.spin(map(speeds[3] + spin_index, -300, 300, -maxSpeed*spin_index_dampner, maxSpeed*spin_index_dampner));
 }
