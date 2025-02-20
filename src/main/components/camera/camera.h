@@ -5,6 +5,7 @@ private:
   Pixy2I2C pixy;
   int32_t centerX;
   int32_t middleThreshold;
+<<<<<<< Updated upstream
   float fov;  // Field of View
   int32_t frameWidth;
 
@@ -15,6 +16,14 @@ private:
   const float knownWidth = 200.0;
   const float focalLength = 149.22;
 >>>>>>> Stashed changes
+=======
+  float fov;
+  int32_t frameWidth;
+
+  const float knownWidth = 230.0;  // Width of the object you're measuring (mm)
+  const float referenceDistance = 300.0;  // Distance to reference object (mm)
+  float focalLength;
+>>>>>>> Stashed changes
 
 public:
   Camera(float fieldOfView, int32_t threshold = 50)
@@ -24,16 +33,36 @@ public:
     Serial.begin(115200);
     pixy.init();
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     frameWidth = pixy.frameWidth;  // Assume Pixy2 has this member or define manually
 =======
     frameWidth = pixy.frameWidth;
 >>>>>>> Stashed changes
+=======
+    frameWidth = pixy.frameWidth;
+>>>>>>> Stashed changes
     centerX = frameWidth / 2;
+    focalLength = 0.0;
+
+    // Continuously look for blocks and calibrate
+    while (pixy.ccc.numBlocks == 0) {
+      Serial.println("Waiting for a reference object...");
+      pixy.ccc.getBlocks();  // Get blocks every time
+      delay(500);
+    }
+
+    // Measure the detected width of the reference object
+    int detectedWidth = pixy.ccc.blocks[0].m_width;
+    focalLength = (detectedWidth * referenceDistance) / knownWidth;
+
+    Serial.print("Calibrated Focal Length: ");
+    Serial.println(focalLength, 2);
   }
 
   String detectDirection() {
     pixy.ccc.getBlocks();
     if (pixy.ccc.numBlocks > 0) {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
       int32_t midX = pixy.ccc.blocks[0].m_x;  // X position of the first block
 =======
@@ -46,10 +75,17 @@ public:
       } else {
         return "RIGHT";
       }
+=======
+      int32_t midX = pixy.ccc.blocks[0].m_x;
+      if (midX > centerX - middleThreshold && midX < centerX + middleThreshold)
+        return "CENTER";
+      return (midX < centerX) ? "LEFT" : "RIGHT";
+>>>>>>> Stashed changes
     }
     return "NO BLOCKS";
   }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   float calculateRotationDistance() {
     if (pixy.ccc.numBlocks > 0) {
@@ -94,11 +130,35 @@ public:
 >>>>>>> Stashed changes
   }
 
+=======
+  float findDistance() {
+    pixy.ccc.getBlocks();  // Always get blocks to update the state
+    if (pixy.ccc.numBlocks > 0) {
+      int detectedWidth = pixy.ccc.blocks[0].m_width;
+      if (detectedWidth > 0) {
+        return (knownWidth * focalLength) / detectedWidth;  // Distance calculation
+      }
+    }
+    return -1;  // No valid block detected
+  }
+
+  float calculateRotationAngle() {
+    pixy.ccc.getBlocks();  // Continuously update the blocks
+    if (pixy.ccc.numBlocks > 0) {
+      int midX = pixy.ccc.blocks[0].m_x;
+      float anglePerPixel = fov / frameWidth;
+      return (midX - centerX) * anglePerPixel;
+    }
+    return 0.0;  // No rotation angle if no blocks are detected
+  }
+
+>>>>>>> Stashed changes
   void printStatus() {
     String direction = detectDirection();
     Serial.print("Direction: ");
     Serial.println(direction);
 
+<<<<<<< Updated upstream
     if (direction != "NO BLOCKS") {
 <<<<<<< Updated upstream
       // Calculate and print distance from the object
@@ -112,11 +172,19 @@ public:
       } else {
         Serial.println("N/A");
       }
+=======
+    if (pixy.ccc.numBlocks > 0) {
+      float distance = findDistance();
+      Serial.print("Distance from Object: ");
+      Serial.println(distance > 0 ? String(distance, 2) + " mm" : "N/A");
+>>>>>>> Stashed changes
 
       float rotationAngle = calculateRotationAngle();
       Serial.print("Rotation Angle: ");
       Serial.print(rotationAngle, 2);
       Serial.println(" degrees");
+    } else {
+      Serial.println("No object detected.");
     }
   }
 };
