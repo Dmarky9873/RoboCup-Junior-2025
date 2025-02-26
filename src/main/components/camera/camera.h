@@ -8,8 +8,8 @@ private:
   float fov;
   int32_t frameWidth;
 
-  const float knownWidth = 230.0;  // Width of the object you're measuring (mm)
-  const float referenceDistance = 300.0;  // Distance to reference object (mm)
+  const float knownWidth = 230.0;
+  const float referenceDistance = 300.0;
   float focalLength;
 
 public:
@@ -50,14 +50,14 @@ public:
   }
 
   float findDistance() {
-    pixy.ccc.getBlocks();  // Always get blocks to update the state
+    pixy.ccc.getBlocks();
     if (pixy.ccc.numBlocks > 0) {
       int detectedWidth = pixy.ccc.blocks[0].m_width;
       if (detectedWidth > 0) {
-        return (knownWidth * focalLength) / detectedWidth;  // Distance calculation
+        return (knownWidth * focalLength) / detectedWidth;
       }
     }
-    return -1;  // No valid block detected
+    return -1;
   }
 
   float calculateRotationAngle() {
@@ -67,7 +67,7 @@ public:
       float anglePerPixel = fov / frameWidth;
       return (midX - centerX) * anglePerPixel;
     }
-    return 0.0;  // No rotation angle if no blocks are detected
+    return 0.0;
   }
 
   void printStatus() {
