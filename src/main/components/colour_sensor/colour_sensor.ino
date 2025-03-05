@@ -2,22 +2,14 @@
 #include <SPI.h>
 
 #define NUM_CHANNELS 8
-#define NUM_CHIPS 2
+#define NUM_CHIPS 3
 
-#define WHITE_THRESHOLD 450
+#define WHITE 1600
 
-const int csPins[] = {10, 36};
+const int csPins[] = {10, 36, 37};
 
 Adafruit_MCP3008 chips[NUM_CHIPS];
 Adafruit_MCP3008 mcp;
-
-typedef struct {
-  int index;
-  int value;
-} ColourSensor;
-
-int channels[NUM_CHANNELS * NUM_CHIPS];
-
 
 /* 
 
@@ -27,20 +19,6 @@ int channels[NUM_CHANNELS * NUM_CHIPS];
     - use positions to determine where oob is  
 
 */
-
-// RIGHT: 5, 4, 3, 2
-// 
-
-
-void print_arr(int* arr, int arr_len) {
-  for (int i = 0; i < arr_len; i++) {
-    Serial.print(i);
-    Serial.print(": ");
-    Serial.print(arr[i]);
-    Serial.print(' ');
-  }
-  Serial.println();
-}
 
 void setup() {
   Serial.begin(9600);
@@ -55,21 +33,27 @@ void setup() {
     }
   }
 
-  for (int i = 0; i < NUM_CHIPS * NUM_CHANNELS; i++) {
-    channels[i] = 0;
-  }
+  
 }
 
 void loop() {
   for (int i = 0; i < NUM_CHIPS; i++) {
+    Serial.println();
+    Serial.print("Chip ");
+    Serial.print(i + 1);
+    Serial.println();
     for (int j = 0; j < NUM_CHANNELS; j++) {
       int val = chips[i].readADC(j);
-      channels[NUM_CHANNELS * i + j] = val;
+      Serial.print("Channel ");
+      Serial.print(j);
+      Serial.print(": ");
+      Serial.println(val);
     }
   }
 
-  print_arr(channels, NUM_CHANNELS * NUM_CHIPS);
+  int value = mcp.readADC(0);
+  Serial.println(value);
 
 
-  delay(50);
+  delay(1000);
 }
