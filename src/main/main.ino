@@ -1,12 +1,14 @@
-#include "components/motor/motor.h"
-#include "components/motor/motor.cpp"
+#include "components/camera/camera.h"
 
-Motor motor_FR(5, 4);
+Camera camera(70);
 
-void setup() {
-  Serial.begin(9600);
+void setup()
+{
+  camera.initialize();
 }
 
-void loop() {
-  motor_FR.spin(200);
+void loop()
+{
+  camera.printStatus();
+  delay(100);
 }
