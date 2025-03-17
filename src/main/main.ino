@@ -16,7 +16,7 @@ typedef struct {
   int value;
 } ColourSensor;
 
-int channels[NUM_CHANNELS * NUM_CHIPS];
+float channels[NUM_CHANNELS * NUM_CHIPS];
 
 
 /* 
@@ -32,7 +32,7 @@ int channels[NUM_CHANNELS * NUM_CHIPS];
 // 
 
 
-void print_arr(int* arr, int arr_len) {
+void print_arr(float* arr, int arr_len) {
   for (int i = 0; i < arr_len; i++) {
     Serial.print(i);
     Serial.print(": ");
@@ -40,6 +40,16 @@ void print_arr(int* arr, int arr_len) {
     Serial.print(' ');
   }
   Serial.println();
+}
+
+void print_arr_for_emulation(float* arr, int arr_len){
+  Serial.print("[ ");
+  for (int i = 0; i < arr_len; i++) {
+    Serial.print(arr[i]);
+    Serial.print(" ");
+  }
+  Serial.print("]");
+  Serial.println(); 
 }
 
 void setup() {
@@ -63,12 +73,12 @@ void setup() {
 void loop() {
   for (int i = 0; i < NUM_CHIPS; i++) {
     for (int j = 0; j < NUM_CHANNELS; j++) {
-      int val = chips[i].readADC(j);
-      channels[NUM_CHANNELS * i + j] = val;
+      float val = chips[i].readADC(j);
+      channels[NUM_CHANNELS * i + j] = map(val, 0, 1023, 0, 1);
     }
   }
 
-  print_arr(channels, NUM_CHANNELS * NUM_CHIPS);
+  print_arr_for_emulation(channels, NUM_CHANNELS * NUM_CHIPS);
 
 
   delay(50);

@@ -23,7 +23,7 @@ while running:
 
     brightness_values = []
 
-    raw = readserial('/dev/tty.usbmodem139169701', 9600)
+    raw = readserial('/dev/cu.usbmodem159293001', 9600)
 
     raw = raw[1:len(raw) - 1].split(' ')
 

@@ -8,8 +8,8 @@ def readserial(comport, baudrate):
     try:
         ser = serial.Serial(comport, baudrate, timeout=0.1)
     except serial.serialutil.SerialException as _:
-        print("Lost connection to port... restarting")
-        return "[ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]"
+        print("Cannot connect to port")
+        quit()
 
     while True:
         data = ser.readline().decode().strip()
@@ -21,5 +21,4 @@ def readserial(comport, baudrate):
 
 
 if __name__ == '__main__':
-
-    readserial('/dev/tty.usbmodem139169701', 9600)
+    readserial('/dev/cu.usbmodem159293001', 9600)
