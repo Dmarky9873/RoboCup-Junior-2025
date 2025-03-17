@@ -4,11 +4,10 @@ class Camera
 {
 private:
   Pixy2I2C pixy;
+  float fov;               
+  int32_t middleThreshold; 
   int32_t centerX;
-  int32_t middleThreshold;
-  float fov;
   int32_t frameWidth;
-
   const float knownWidth = 230.0;
   const float referenceDistance = 300.0;
   float focalLength;
@@ -19,8 +18,10 @@ public:
 
   void initialize()
   {
-    Serial.begin(115200);
+
+    Serial.println("hell0");
     pixy.init();
+
     frameWidth = pixy.frameWidth;
     centerX = frameWidth / 2;
   }
