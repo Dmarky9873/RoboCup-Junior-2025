@@ -9,13 +9,12 @@ IR ir;
 void setup() {
   Serial.begin(9600);
   ir.initIR();
-  // m.initMovement();
+  m.initMovement();
 }
 
 void loop() {
-  Serial.println(ir.getBallAngle());
-  m.move(ir.getBallAngle(), 200);
-  // m.move(45, 200);
-  // m.rotate(50);
-
+  float ballAngle = ir.getBallAngle();
+  Serial.println(ballAngle);
+  m.move(ballAngle, 200);
+  delay(50);
 }

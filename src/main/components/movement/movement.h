@@ -12,7 +12,7 @@ class Movement {
 
     void brake();
 
-    void rotateTo(int degrees);
+    void rotateTo(double theta, int maxSpeed);
 
     void move(double theta, int maxSpeed);
     
@@ -24,7 +24,7 @@ class Movement {
     Motor motor_FR{7, 6};
     Motor motor_FL{0, 1};
     Motor motor_BR{3, 2};
-    const unsigned int COMPASS_BUFF = 20;
+    const unsigned int COMPASS_BUFF = 22;
 };
 
 #endif
