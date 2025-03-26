@@ -1,3 +1,4 @@
+//Kyle Andersen 2025
 class Kicker {
 public:
   bool kickTriggered = false;

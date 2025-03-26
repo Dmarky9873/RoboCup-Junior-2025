@@ -1,7 +1,8 @@
+//Kyle Andersen 2025
+
 #include <Pixy2I2C.h>
 
-class Camera
-{
+class Camera {
 private:
   Pixy2I2C pixy;
   int32_t centerX;
@@ -9,27 +10,35 @@ private:
   float fov;
   int32_t frameWidth;
 
-  const float knownWidth = 230.0;
-  const float referenceDistance = 300.0;
+  //needs to be configured everytime
+  const float knownWidthOfObject = 530.0;
+  const float referenceDistance = 1000.0;
   float focalLength;
 
 public:
   Camera(float fieldOfView, int32_t threshold = 50)
-      : fov(fieldOfView), middleThreshold(threshold) {}
+    : fov(fieldOfView), middleThreshold(threshold) {}
 
-  void initialize()
-  {
+  void initialize() {
     Serial.begin(115200);
     pixy.init();
     frameWidth = pixy.frameWidth;
     centerX = frameWidth / 2;
+
+    // Calculate focal length using known reference values
+    pixy.ccc.getBlocks();
+    if (pixy.ccc.numBlocks > 0) {
+      int detectedWidth = pixy.ccc.blocks[0].m_width;
+      if (detectedWidth > 0) {
+        focalLength = (detectedWidth * referenceDistance) / knownWidthOfObject;
+      }
+    }
   }
 
-  String detectDirection()
-  {
+
+  String detectDirection() {
     pixy.ccc.getBlocks();
-    if (pixy.ccc.numBlocks > 0)
-    {
+    if (pixy.ccc.numBlocks > 0) {
       int32_t midX = pixy.ccc.blocks[0].m_x;
       if (midX > centerX - middleThreshold && midX < centerX + middleThreshold)
         return "CENTER";
@@ -38,25 +47,21 @@ public:
     return "NO BLOCKS";
   }
 
-  float findDistance()
-  {
+  float findDistance() {
     pixy.ccc.getBlocks();
-    if (pixy.ccc.numBlocks > 0)
-    {
+    if (pixy.ccc.numBlocks > 0) {
       int detectedWidth = pixy.ccc.blocks[0].m_width;
-      if (detectedWidth > 0)
-      {
-        return (knownWidth * focalLength) / detectedWidth;
+      if (detectedWidth > 0) {
+        return (knownWidthOfObject * focalLength) / detectedWidth;
       }
     }
     return -1;
   }
 
-  float calculateRotationAngle()
-  {
-    pixy.ccc.getBlocks(); // Continuously update the blocks
-    if (pixy.ccc.numBlocks > 0)
-    {
+
+  float calculateRotationAngle() {
+    pixy.ccc.getBlocks();  // Continuously update the blocks
+    if (pixy.ccc.numBlocks > 0) {
       int midX = pixy.ccc.blocks[0].m_x;
       float anglePerPixel = fov / frameWidth;
       return (midX - centerX) * anglePerPixel;
@@ -64,14 +69,12 @@ public:
     return 0.0;
   }
 
-  void printStatus()
-  {
+  void printStatus() {
     String direction = detectDirection();
     Serial.print("Direction: ");
     Serial.println(direction);
 
-    if (pixy.ccc.numBlocks > 0)
-    {
+    if (pixy.ccc.numBlocks > 0) {
       float distance = findDistance();
       Serial.print("Distance from Object: ");
       Serial.println(distance > 0 ? String(distance, 2) + " mm" : "N/A");
@@ -80,9 +83,7 @@ public:
       Serial.print("Rotation Angle: ");
       Serial.print(rotationAngle, 2);
       Serial.println(" degrees");
-    }
-    else
-    {
+    } else {
       Serial.println("No object detected.");
     }
   }
