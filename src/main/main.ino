@@ -13,8 +13,10 @@ void setup() {
 }
 
 void loop() {
-  float ballAngle = ir.getBallAngle();
-  Serial.println(ballAngle);
-  m.move(ballAngle, 200);
-  delay(50);
+  // float ballAngle = ir.getBallAngle();
+  // Serial.println(ballAngle);
+  // m.move(ballAngle, 200);
+  // delay(50);
+
+  m.move(0, 150);
 }
