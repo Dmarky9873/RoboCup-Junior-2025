@@ -13,10 +13,19 @@ void setup() {
 }
 
 void loop() {
+<<<<<<< Updated upstream
   // float ballAngle = ir.getBallAngle();
   // Serial.println(ballAngle);
   // m.move(ballAngle, 200);
   // delay(50);
 
   m.move(0, 150);
+=======
+  // m.move(0, 150);
+  float ballAngle = ir.getBallAngle();
+  Serial.print("ballAngle: ");
+  Serial.println(ballAngle > 180 ? ballAngle - 360 : ballAngle);
+  m.move(ballAngle, 200);
+  delay(50);
+>>>>>>> Stashed changes
 }
