@@ -76,15 +76,15 @@ void Movement::move(double theta, int maxSpeed) {
   double adjustedAngle = theta + reading;
 
   // handle own goal cases
-  if ((adjustedAngle > 90 && adjustedAngle <= 160) || (adjustedAngle >= 200 && adjustedAngle < 270)) {
-    theta = 180;
-  }
-  else if (adjustedAngle > 160 && adjustedAngle < 180) {
-    theta = theta + (180 - theta) * 2;
-  }
-  else if (adjustedAngle > 180 && adjustedAngle < 200) {
-    theta = theta - (theta - 180) * 2;
-  }
+  // if ((adjustedAngle > 90 && adjustedAngle <= 160) || (adjustedAngle >= 200 && adjustedAngle < 270)) {
+  //   theta = 180;
+  // }
+  // else if (adjustedAngle > 160 && adjustedAngle < 180) {
+  //   theta = theta + (180 - theta) * 2;
+  // }
+  // else if (adjustedAngle > 180 && adjustedAngle < 200) {
+  //   theta = theta - (theta - 180) * 2;
+  // }
 
   double speeds[4] = {
     maxSpeed * sin(((theta - 90 + 40) * M_PI) / 180),  // TR
@@ -100,22 +100,22 @@ void Movement::move(double theta, int maxSpeed) {
   float spin_index = 0;
 
   // point north
-  if (!compass.isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
-    float speed = min + (mult *((abs(reading) / 180) * (maxSpeed - min)));
-    if (0 < reading) {
-      speed = speed * -1;
-    } 
-    spin_index = speed;
-  }
-
-  // point towards ball
-  // if (!compass.isBetween(degrees - COMPASS_BUFF, degrees + COMPASS_BUFF, 0)) {
-  //   float speed = min + (mult *((abs(degrees) / 180) * (maxSpeed - min)));
-  //   if (degrees + COMPASS_BUFF < 0) {
+  // if (!compass.isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
+  //   float speed = min + (mult *((abs(reading) / 180) * (maxSpeed - min)));
+  //   if (0 < reading) {
   //     speed = speed * -1;
-  //   }
+  //   } 
   //   spin_index = speed;
   // }
+
+  // point towards ball
+  if (!compass.isBetween(degrees - COMPASS_BUFF, degrees + COMPASS_BUFF, 0)) {
+    float speed = min + (mult *((abs(degrees) / 180) * (maxSpeed - min)));
+    if (degrees + COMPASS_BUFF < 0) {
+      speed = speed * -1;
+    }
+    spin_index = speed;
+  }
 
   // Serial.print("Spin Index: ");
   // Serial.println(spin_index);
