@@ -21,7 +21,3 @@ float Compass::readCompass()
     int angle = event.orientation.x;
     return (angle > 180) ? angle - 360 : angle;
 }
-
-bool Compass::isBetween(int lower, int upper, int x) {
-  return lower < x && x < upper;
-}

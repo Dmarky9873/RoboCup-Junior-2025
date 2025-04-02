@@ -6,6 +6,10 @@ void Movement::initMovement() {
   colorSensor.init();
 }
 
+bool Movement::isBetween(int lower, int upper, int x) {
+  return lower < x && x < upper;
+}
+
 void Movement::debug() {
   colorSensor.printReadings();
 }
@@ -46,42 +50,27 @@ void Movement::move(double theta, int maxSpeed) {
   float reading = compass.readCompass();
 
   // double degrees = theta > 180 ? theta - 360 : theta;
-  float mult = 0.5;
+  float maxRotation = 60;
   float min = 30;
 
   float spin_index = 0;
 
   // point north
-  if (!compass.isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
-    float speed = min + (mult *((abs(reading) / 180) * (maxSpeed - min)));
-    if (0 < reading) {
+  if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
+    float speed = min + (abs(reading) / 180) * (maxRotation);
+    if (reading > 0) {
       speed = speed * -1;
     } 
     spin_index = speed;
+  } 
 
-    // // check if color sensor detects oob
-    // if ((colorSensor.frontDetected() == 0 && (theta > 315 || theta <= 45)) || 
-    // (colorSensor.rightDetected() == 0 && (theta > 45 && theta <= 135)) || 
-    // (colorSensor.backDetected() == 0 && (theta > 135 && theta <= 225)) ||
-    // (colorSensor.leftDetected() == 0 && (theta > 225 && theta <= 315)))
-    // {
-    //   theta = theta > 180 ? theta - 180 : theta + 180;
-    // }
-    // else {
-    //   // add or subtract degrees from theta
-    //   // to make the robot catch ball in dribbler area
-    //   if (theta <= 180) {
-    //     theta = theta + 30;
-    //   }
-    //   else {
-    //     theta = theta - 30;
-    //   }
-    // }
+  // catching ball
+  if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta)) {
     if (theta <= 180) {
-      theta = theta + 30;
+      theta = theta + 35;
     }
     else {
-      theta = theta - 30;
+      theta = theta - 35;
     }
   }
 

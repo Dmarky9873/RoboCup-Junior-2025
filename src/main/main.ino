@@ -27,27 +27,27 @@ void loop() {
   float ballAngle = ir.getBallAngle();
   // Serial.print("ballAngle: ");
   // Serial.println(ballAngle > 180 ? ballAngle - 360 : ballAngle);
-  // m.move(ballAngle, speed);
-  if (m.is_on_border()) {
-    shouldStop = true;
-  } 
+  m.move(ballAngle, speed);
+  // if (m.is_on_border()) {
+  //   shouldStop = true;
+  // } 
 
-  if (!shouldStop) {
-    m.move(ballAngle, speed);
-  } else {
-    float stopped_robot_ball_angle = ir.getBallAngle();
-    float curr_ball_angle = stopped_robot_ball_angle;
+  // if (!shouldStop) {
+  //   m.move(ballAngle, speed);
+  // } else {
+  //   float stopped_robot_ball_angle = ir.getBallAngle();
+  //   float curr_ball_angle = stopped_robot_ball_angle;
     
-    while (angularDifference(stopped_robot_ball_angle, curr_ball_angle) < 20) {
-      curr_ball_angle = ir.getBallAngle();
-      m.brake();
-      delay(50);
-    }
+  //   while (angularDifference(stopped_robot_ball_angle, curr_ball_angle) < 20) {
+  //     curr_ball_angle = ir.getBallAngle();
+  //     m.brake();
+  //     delay(50);
+  //   }
     
-    shouldStop = false;
-    m.move(ballAngle, speed);
-    delay(300);
-  }
+  //   shouldStop = false;
+  //   m.move(ballAngle, speed);
+  //   delay(300);
+  // }
 
   // m.move(0, speed);
 

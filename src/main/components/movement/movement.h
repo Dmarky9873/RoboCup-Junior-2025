@@ -19,11 +19,21 @@ class Movement {
   private:
     Compass compass;
     ColorSensor colorSensor;
-    Motor motor_BL{2, 3}; 
-    Motor motor_FR{1, 0};
-    Motor motor_FL{6, 7};
-    Motor motor_BR{5, 4};
-    const unsigned int COMPASS_BUFF = 15;
+
+    // 1
+    // Motor motor_BL{2, 3}; 
+    // Motor motor_FR{1, 0};
+    // Motor motor_FL{6, 7};
+    // Motor motor_BR{5, 4};
+
+    // 2 
+    // Motor motor_BL{0, 1}; 
+    // Motor motor_FR{3, 2};
+    // Motor motor_FL{4, 5};
+    // Motor motor_BR{7, 6};
+
+    bool isBetween(int lower, int upper, int x);
+    const unsigned int COMPASS_BUFF = 13;
 
 };
 

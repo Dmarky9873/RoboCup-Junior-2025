@@ -16,8 +16,6 @@ public:
    */
   float readCompass();
 
-  bool isBetween(int lower, int upper, int x);
-
 private: 
 
   Adafruit_BNO055 bno;
