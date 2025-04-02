@@ -14,6 +14,7 @@ class ColorSensor {
     int rightDetected();
     int backDetected();
     int leftDetected();
+    bool isDetected();
 
   private:
     Adafruit_MCP3008 chips[NUM_CHIPS];

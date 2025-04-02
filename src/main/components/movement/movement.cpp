@@ -10,6 +10,18 @@ void Movement::debug() {
   colorSensor.printReadings();
 }
 
+void Movement::debug_sees_border() {
+  if (colorSensor.isDetected()) {
+    Serial.println("on the border");
+  } else {
+    Serial.println("no border detected");
+  }
+}
+
+bool Movement::is_on_border() {
+  return colorSensor.isDetected();
+}
+
 void Movement::brake() {
   motor_FR.brake();
   motor_BR.brake();

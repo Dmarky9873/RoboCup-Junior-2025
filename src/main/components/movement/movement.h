@@ -3,7 +3,7 @@
 
 #include "../motor/motor.cpp"
 #include "../compass/compass.cpp"
-#include "../colorsensor/colorsensor.cpp"
+#include "../colorsensor/colorsensor.h"
 
 class Movement {
 
@@ -13,6 +13,8 @@ class Movement {
     void brake();
     void move(double theta, int maxSpeed);
     void rotate(int speed);
+    void debug_sees_border();
+    bool is_on_border();
 
   private:
     Compass compass;
