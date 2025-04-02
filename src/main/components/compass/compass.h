@@ -1,19 +1,11 @@
-#include "components.h"
-
 #ifndef COMPASS_H
 #define COMPASS_H
 
-class Compass : public Component {
-public:
-  /**
-   * Constructor, sets private variables to params.
-   *
-   * @param `pin_` pin for spin.
-   * @param `dir_pin_` pin for direction.
-   * @param `brake_pin_` pin for brake.
-   */
-  Compass(int pin_numbers[], uint8_t modes[], int number_of_pins, String component_name);
+#include "Adafruit_BNO055.h"
+#include <Wire.h>
 
+class Compass {
+public:
   /**
    * Initialize pins to Adafruit_BNO055
    */
@@ -24,18 +16,12 @@ public:
    */
   float readCompass();
 
-  /**
-   * Returns true if `x` is between `lower` and `upper` degrees 
-   */
-  boolean isBetween(int lower, int upper, int x);
-
-  /**
-   * Returns true if robot is pointing north 
-   */
-  boolean isNorth();
-
+  bool isBetween(int lower, int upper, int x);
 
 private: 
+
   Adafruit_BNO055 bno;
 
 };
+
+#endif

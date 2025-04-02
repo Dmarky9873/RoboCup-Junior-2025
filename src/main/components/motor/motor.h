@@ -1,5 +1,3 @@
-#include <Adafruit_BNO055.h>
-
 #ifndef MOTOR_H
 #define MOTOR_H
 

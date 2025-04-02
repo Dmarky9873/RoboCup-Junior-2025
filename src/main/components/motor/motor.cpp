@@ -1,4 +1,3 @@
-#include "Arduino.h"
 #include "motor.h"
 
 Motor::Motor(unsigned int pin_c, unsigned int pin_cc)

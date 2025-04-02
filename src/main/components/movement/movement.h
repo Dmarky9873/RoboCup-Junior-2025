@@ -1,35 +1,30 @@
+#ifndef MOVEMENT_H
+#define MOVEMENT_H
+
+#include "../motor/motor.cpp"
+#include "../compass/compass.cpp"
+#include "../colorsensor/colorsensor.h"
+
 class Movement {
 
   public:
-    void initMotor();
-
-    void rotate(int speed);
-
+    void initMovement();
+    void debug();
     void brake();
+    void move(double theta, int maxSpeed);
+    void rotate(int speed);
+    void debug_sees_border();
+    bool is_on_border();
 
-    void pointNorth(int baseSpeed);
-
-    void moveNorth(unsigned int speed);
-
-    void moveSouth(unsigned int speed);
-
-    void moveEast(unsigned int speed);
-
-    void moveWest(unsigned int speed);
-
-    void moveNorthEast(unsigned int speed);
-
-    void moveNorthWest(unsigned int speed);
-
-    void moveSouthEast(unsigned int speed);
-
-    void moveSouthWest(unsigned int speed);
-    
   private:
-    Motor motor_0{1, 3, 2};
-    Motor motor_1{7, 9, 8};
-    Motor motor_2{28, 35, 29};
-    Motor motor_3{4, 6, 5};
-    Motor motors[4];
     Compass compass;
+    ColorSensor colorSensor;
+    Motor motor_BL{3, 2}; 
+    Motor motor_FR{0, 1};
+    Motor motor_FL{7, 6};
+    Motor motor_BR{4, 5};
+    const unsigned int COMPASS_BUFF = 15;
+
 };
+
+#endif
