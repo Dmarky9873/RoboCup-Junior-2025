@@ -49,6 +49,8 @@ void loop() {
     delay(300);
   }
 
+  // m.move(0, speed);
+
   // m.debug_sees_border();
   
   // m.debug();
