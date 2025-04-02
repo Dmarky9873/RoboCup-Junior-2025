@@ -3,6 +3,11 @@
 
 void Movement::initMovement() {
   compass.initialize();
+  colorSensor.init();
+}
+
+void Movement::debug() {
+  colorSensor.printReadings();
 }
 
 void Movement::brake() {
@@ -19,51 +24,6 @@ void Movement::rotate(int speed) {
   motor_FL.spin(speed);
 }
 
-// void Movement::rotateTo(int degrees, int speed) {
-//   float reading = compass.readCompass();
-//   while(!compass.isBetween(degrees - COMPASS_BUFF, degrees + COMPASS_BUFF, reading)) {
-//     if (reading + degrees > degrees) {
-//       rotate(-speed);
-//     }
-//     else {
-//       rotate(speed);
-//     }
-//     reading = compass.readCompass();
-//   }
-//   brake();
-// }
-
-void Movement::rotateTo(double theta, int maxSpeed) {
-  float reading = compass.readCompass();
-  Serial.print("reading: ");
-  Serial.println(reading);
-
-  if (theta == -1)
-  {
-    brake();
-    return;
-  }
-
-  double degrees = theta > 180 ? theta - 360 : theta;
-  float mult = 0.4;
-  float min = 60;
-
-  if (!compass.isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
-    int speed = 40;
-    if (COMPASS_BUFF < reading) {
-      speed = speed * -1;
-    }
-    // Serial.println(speed);
-    motor_FR.spin(speed);
-    motor_BR.spin(speed);
-    motor_BL.spin(speed);
-    motor_FL.spin(speed);
-  }
-  else {
-    brake();
-  }
-}
-
 void Movement::move(double theta, int maxSpeed) {
   if (theta == -1)
   {
@@ -73,18 +33,45 @@ void Movement::move(double theta, int maxSpeed) {
 
   float reading = compass.readCompass();
 
-  double adjustedAngle = theta + reading;
+  // double degrees = theta > 180 ? theta - 360 : theta;
+  float mult = 0.5;
+  float min = 30;
 
-  // handle own goal cases
-  // if ((adjustedAngle > 90 && adjustedAngle <= 160) || (adjustedAngle >= 200 && adjustedAngle < 270)) {
-  //   theta = 180;
-  // }
-  // else if (adjustedAngle > 160 && adjustedAngle < 180) {
-  //   theta = theta + (180 - theta) * 2;
-  // }
-  // else if (adjustedAngle > 180 && adjustedAngle < 200) {
-  //   theta = theta - (theta - 180) * 2;
-  // }
+  float spin_index = 0;
+
+  // point north
+  if (!compass.isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
+    float speed = min + (mult *((abs(reading) / 180) * (maxSpeed - min)));
+    if (0 < reading) {
+      speed = speed * -1;
+    } 
+    spin_index = speed;
+
+    // // check if color sensor detects oob
+    // if ((colorSensor.frontDetected() == 0 && (theta > 315 || theta <= 45)) || 
+    // (colorSensor.rightDetected() == 0 && (theta > 45 && theta <= 135)) || 
+    // (colorSensor.backDetected() == 0 && (theta > 135 && theta <= 225)) ||
+    // (colorSensor.leftDetected() == 0 && (theta > 225 && theta <= 315)))
+    // {
+    //   theta = theta > 180 ? theta - 180 : theta + 180;
+    // }
+    // else {
+    //   // add or subtract degrees from theta
+    //   // to make the robot catch ball in dribbler area
+    //   if (theta <= 180) {
+    //     theta = theta + 30;
+    //   }
+    //   else {
+    //     theta = theta - 30;
+    //   }
+    // }
+    if (theta <= 180) {
+      theta = theta + 30;
+    }
+    else {
+      theta = theta - 30;
+    }
+  }
 
   double speeds[4] = {
     maxSpeed * sin(((theta - 90 + 40) * M_PI) / 180),  // TR
@@ -93,29 +80,14 @@ void Movement::move(double theta, int maxSpeed) {
     maxSpeed * sin(((theta + 90 - 40) * M_PI) / 180)   // TL
   };
 
-  double degrees = theta > 180 ? theta - 360 : theta;
-  float mult = 0.5;
-  float min = 30;
-
-  float spin_index = 0;
-
-  // point north
-  // if (!compass.isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
-  //   float speed = min + (mult *((abs(reading) / 180) * (maxSpeed - min)));
-  //   if (0 < reading) {
+  // point towards ball
+  // if (!compass.isBetween(degrees - COMPASS_BUFF, degrees + COMPASS_BUFF, 0)) {
+  //   float speed = min + (mult *((abs(degrees) / 180) * (maxSpeed - min)));
+  //   if (degrees + COMPASS_BUFF < 0) {
   //     speed = speed * -1;
-  //   } 
+  //   }
   //   spin_index = speed;
   // }
-
-  // point towards ball
-  if (!compass.isBetween(degrees - COMPASS_BUFF, degrees + COMPASS_BUFF, 0)) {
-    float speed = min + (mult *((abs(degrees) / 180) * (maxSpeed - min)));
-    if (degrees + COMPASS_BUFF < 0) {
-      speed = speed * -1;
-    }
-    spin_index = speed;
-  }
 
   // Serial.print("Spin Index: ");
   // Serial.println(spin_index);

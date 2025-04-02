@@ -9,14 +9,13 @@
 class ColorSensor {
   public:
     void init();
-    void debugRaw();
-    void debugFiltered();
-    float getOOBDirection();
+    void printReadings();
+    int frontDetected();
+    int rightDetected();
+    int backDetected();
+    int leftDetected();
 
   private:
-    int* getFilteredArr();
-    int* getReadingsArr();
-    int findArrayMidpoint(int* arr);
     Adafruit_MCP3008 chips[NUM_CHIPS];
 };
 
