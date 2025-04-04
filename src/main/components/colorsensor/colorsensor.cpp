@@ -4,7 +4,7 @@
 const int csPins[] = {36, 10};
 
 // change these values when adjusting to new field
-const int greenValues[] = {450, 250, 250, 250, 250, 250, 250, 250, 250, 250, 999, 250, 250, 250, 250, 500};
+const int greenValues[] = {250, 200, 200, 200, 200, 200, 150, 150, 200, 150, 999, 150, 150, 150, 200, 250};
 
 const float angles[] = {0, 337.5, 315, 292.5, 270, 247.5, 225, 202.5, 180, 157.5, 135, 112.5, 90, 67.5, 45, 22.5};
 
@@ -68,7 +68,7 @@ bool ColorSensor::isDetected() {
   for (int i = 0; i < NUM_CHIPS; i++) {
     for (int j = 0; j < NUM_CHANNELS; j++) {
       int val = chips[i].readADC(j);
-      if (val > greenValues[i * 8 + j] + 100) {
+      if (val > greenValues[i * 8 + j] + 150) {
         // Serial.print(val);
         // Serial.print(" ");
         // Serial.println(greenValues[i * 8 + j]);

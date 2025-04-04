@@ -22,10 +22,6 @@ void Movement::debug_sees_border() {
   }
 }
 
-bool Movement::is_on_border() {
-  return colorSensor.isDetected();
-}
-
 void Movement::brake() {
   motor_FR.brake();
   motor_BR.brake();
@@ -50,8 +46,8 @@ void Movement::move(double theta, int maxSpeed) {
   float reading = compass.readCompass();
 
   // double degrees = theta > 180 ? theta - 360 : theta;
-  float maxRotation = 60;
-  float min = 30;
+  float maxRotation = 40;
+  float min = 20;
 
   float spin_index = 0;
 
@@ -67,10 +63,10 @@ void Movement::move(double theta, int maxSpeed) {
   // catching ball
   if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta)) {
     if (theta <= 180) {
-      theta = theta + 35;
+      theta = theta + 30;
     }
     else {
-      theta = theta - 35;
+      theta = theta - 30;
     }
   }
 
