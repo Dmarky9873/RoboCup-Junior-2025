@@ -46,8 +46,8 @@ void Movement::move(double theta, int maxSpeed, bool avoid) {
   float reading = compass.readCompass();
 
   // double degrees = theta > 180 ? theta - 360 : theta;
-  float maxRotation = 30;
-  float min = 10;
+  float maxRotation = 50;
+  float min = 20;
 
   float spin_index = 0;
 

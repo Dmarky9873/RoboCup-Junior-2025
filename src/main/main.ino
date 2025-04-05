@@ -11,7 +11,7 @@ ColorSensor c;
 
 //me: hay...bale, bale: wsg twin sybau ts ts ts pmo 
 void attack_w_color_sensor() {
-  int speed = 170;
+  int speed = 160;
 
   float curr_ball_angle = ir.getBallAngle();
   m.move(curr_ball_angle, speed, false);
@@ -20,7 +20,7 @@ void attack_w_color_sensor() {
   
   while(colorDetected != -1) {
     m.brake();
-    m.move(colorDetected, speed, true);
+    m.move(colorDetected, speed + 30, true);
     delay(200);
     colorDetected = c.isDetected();
   }
@@ -39,7 +39,7 @@ void loop() {
   // float ballAngle = ir.getBallAngle();
   // // Serial.print("ballAngle: ");
   // // Serial.println(ballAngle > 180 ? ballAngle - 360 : ballAngle);
-  // m.move(ballAngle, speed);
+  // m.move(ballAngle, speed, false);
 
   // m.debug_sees_border();
   attack_w_color_sensor();

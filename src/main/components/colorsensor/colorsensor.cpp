@@ -4,15 +4,17 @@
 const int csPins[] = {36, 10};
 
 // change these values when adjusting to new field
-const int greenValues[] = {150, 100, 50, 50, 100, 100, 50, 50, 100, 50, 999, 50, 100, 100, 100, 200};
-
-const float angles[] = {0, 337.5, 315, 292.5, 270, 247.5, 225, 202.5, 180, 157.5, 135, 112.5, 90, 67.5, 45, 22.5};
+int greenValues[16];
 
 void ColorSensor::init() {
   SPI.begin();
   for (int i = 0; i < NUM_CHIPS; i++) {
     // wait until chips are initialized 
     while (!chips[i].begin(csPins[i]));
+  }
+
+  for (int i = 0; i < 16; i++) {
+    greenValues[i] = chips[i/8].readADC(i%8);
   }
 }
 
