@@ -51,23 +51,26 @@ void Movement::move(double theta, int maxSpeed, bool avoid) {
   float spin_index = 0;
 
   // point north
-  int MINOR_ADJUSTMENT_WINDOW = 60;
-  int COMPASS_MAJOR_ADJUSTMENT_SPEED = 180;
-
+  int MINOR_ADJUSTMENT_WINDOW = 70;
+  int COMPASS_MAJOR_ADJUSTMENT_SPEED = 36;
 
   if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
-    if (abs(reading) > MINOR_ADJUSTMENT_WINDOW) {
+    if (abs(reading) < MINOR_ADJUSTMENT_WINDOW) {
+      // Serial.println("minor correction");
       float speed = min + (abs(reading) / 180) * (maxRotation);
       if (reading > 0) {
         speed = speed * -1;
       }
       spin_index = speed;
     } else {
-      do {
+      while (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
+        // Serial.println("major correction");
+        int direction = reading > 0 ? -COMPASS_MAJOR_ADJUSTMENT_SPEED : COMPASS_MAJOR_ADJUSTMENT_SPEED;
+        rotate(direction);
         reading = compass.readCompass();
-        rotate(reading > 0 ? -COMPASS_MAJOR_ADJUSTMENT_SPEED : COMPASS_MAJOR_ADJUSTMENT_SPEED);
-      } while (isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading));
+      }
     }
+    // Serial.println("correcting compass");
   }
 
   // catching ball
@@ -106,6 +109,7 @@ void Movement::move(double theta, int maxSpeed, bool avoid) {
 
   // Serial.println(map(speeds[0] + spin_index, 0, 300, 0, maxSpeed));
 
+  // Serial.println(speeds[0] + spin_index);
   motor_FR.spin(map(speeds[0] + spin_index, -255, 255, -maxSpeed, maxSpeed));
   motor_BR.spin(map(speeds[1] + spin_index, -255, 255, -maxSpeed, maxSpeed));
   motor_BL.spin(map(speeds[2] + spin_index, -255, 255, -maxSpeed, maxSpeed));

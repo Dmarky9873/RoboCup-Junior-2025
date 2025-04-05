@@ -20,6 +20,7 @@ void attack_w_color_sensor() {
   float colorDetected = c.isDetected();
   
   while(colorDetected != -1) {
+    // Serial.println("oob");
     m.brake();
     m.move(colorDetected, speed, true);
     delay(200);
