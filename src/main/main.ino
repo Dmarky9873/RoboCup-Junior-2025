@@ -12,6 +12,7 @@ ColorSensor c;
 //me: hay...bale, bale: wsg twin sybau ts ts ts pmo 
 void attack_w_color_sensor() {
   int speed = 170;
+  // daniel is the goat
 
   float curr_ball_angle = ir.getBallAngle();
   m.move(curr_ball_angle, speed, false);

@@ -37,11 +37,10 @@ void Movement::rotate(int speed) {
 }
 
 void Movement::move(double theta, int maxSpeed, bool avoid) {
-  if (theta == -1)
-  {
+  if (theta == -1) {
     brake();
     return;
-  } 
+  }
 
   float reading = compass.readCompass();
 
@@ -52,20 +51,30 @@ void Movement::move(double theta, int maxSpeed, bool avoid) {
   float spin_index = 0;
 
   // point north
-  if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
-    float speed = min + (abs(reading) / 180) * (maxRotation);
-    if (reading > 0) {
-      speed = speed * -1;
-    } 
-    spin_index = speed;
-  } 
+  int MINOR_ADJUSTMENT_WINDOW = 60;
+  int COMPASS_MAJOR_ADJUSTMENT_SPEED = 180;
 
-  // catching ball 
+
+  if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
+    if (abs(reading) > MINOR_ADJUSTMENT_WINDOW) {
+      float speed = min + (abs(reading) / 180) * (maxRotation);
+      if (reading > 0) {
+        speed = speed * -1;
+      }
+      spin_index = speed;
+    } else {
+      do {
+        reading = compass.readCompass();
+        rotate(reading > 0 ? -COMPASS_MAJOR_ADJUSTMENT_SPEED : COMPASS_MAJOR_ADJUSTMENT_SPEED);
+      } while (isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading));
+    }
+  }
+
+  // catching ball
   if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta) && !avoid) {
     if (theta <= 180) {
       theta = theta + 30;
-    }
-    else {
+    } else {
       theta = theta - 30;
     }
   }
