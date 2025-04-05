@@ -51,27 +51,14 @@ void Movement::move(double theta, int maxSpeed, bool avoid) {
   float spin_index = 0;
 
   // point north
-  int MINOR_ADJUSTMENT_WINDOW = 70;
-  int COMPASS_MAJOR_ADJUSTMENT_SPEED = 36;
 
   if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
-    if (abs(reading) < MINOR_ADJUSTMENT_WINDOW) {
-      // Serial.println("minor correction");
-      float speed = min + (abs(reading) / 180) * (maxRotation);
-      if (reading > 0) {
-        speed = speed * -1;
-      }
-      spin_index = speed;
-    } else {
-      while (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
-        // Serial.println("major correction");
-        int direction = reading > 0 ? -COMPASS_MAJOR_ADJUSTMENT_SPEED : COMPASS_MAJOR_ADJUSTMENT_SPEED;
-        rotate(direction);
-        reading = compass.readCompass();
-      }
-    }
-    // Serial.println("correcting compass");
-  }
+    float speed = min + (abs(reading) / 180) * (maxRotation);
+    if (reading > 0) {
+      speed = speed * -1;
+    } 
+    spin_index = speed;
+  } 
 
   // catching ball
   if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta) && !avoid) {
