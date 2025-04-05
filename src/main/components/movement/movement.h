@@ -11,7 +11,7 @@ class Movement {
     void initMovement();
     void debug();
     void brake();
-    void move(double theta, int maxSpeed);
+    void move(double theta, int maxSpeed, bool avoid);
     void rotate(int speed);
     void debug_sees_border();
     bool is_on_border();
@@ -33,7 +33,7 @@ class Movement {
     Motor motor_BR{7, 6};
 
     bool isBetween(int lower, int upper, int x);
-    const unsigned int COMPASS_BUFF = 10;
+    const unsigned int COMPASS_BUFF = 8;
 
 };
 

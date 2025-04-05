@@ -36,7 +36,7 @@ void Movement::rotate(int speed) {
   motor_FL.spin(speed);
 }
 
-void Movement::move(double theta, int maxSpeed) {
+void Movement::move(double theta, int maxSpeed, bool avoid) {
   if (theta == -1)
   {
     brake();
@@ -46,8 +46,8 @@ void Movement::move(double theta, int maxSpeed) {
   float reading = compass.readCompass();
 
   // double degrees = theta > 180 ? theta - 360 : theta;
-  float maxRotation = 40;
-  float min = 20;
+  float maxRotation = 30;
+  float min = 10;
 
   float spin_index = 0;
 
@@ -60,8 +60,8 @@ void Movement::move(double theta, int maxSpeed) {
     spin_index = speed;
   } 
 
-  // catching ball
-  if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta)) {
+  // catching ball 
+  if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta) && !avoid) {
     if (theta <= 180) {
       theta = theta + 30;
     }
