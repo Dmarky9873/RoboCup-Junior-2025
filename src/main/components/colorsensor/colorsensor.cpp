@@ -2,6 +2,7 @@
 #include "colorsensor.h"
 
 const int csPins[] = {36, 10};
+const int buffer = 50;
 
 // change these values when adjusting to new field
 int greenValues[16];
@@ -34,12 +35,84 @@ void ColorSensor::printReadings() {
   }
 }
 
+int ColorSensor::countFront() {
+  int count = 0;
+  if (chips[1].readADC(6) > greenValues[14] + buffer) {
+    count++;
+  }
+  if (chips[1].readADC(7) > greenValues[15] + buffer) {
+    count++;
+  }
+  if (chips[0].readADC(0) > greenValues[0] + buffer) {
+    count++;
+  }
+  if (chips[0].readADC(1) > greenValues[1] + buffer) {
+    count++;
+  }
+
+  return count;
+}
+
+int ColorSensor::countRight() {
+  int count = 0;
+  if (chips[0].readADC(2) > greenValues[2] + buffer) {
+    count++;
+  }
+  if (chips[0].readADC(3) > greenValues[3] + buffer) {
+    count++;
+  }
+  if (chips[0].readADC(4) > greenValues[4] + buffer) {
+    count++;
+  }
+  if (chips[0].readADC(5) > greenValues[5] + buffer) {
+    count++;
+  }
+
+  return count;
+}
+
+int ColorSensor::countBack() {
+  int count = 0;
+  if (chips[0].readADC(6) > greenValues[6] + buffer) {
+    count++;
+  }
+  if (chips[0].readADC(7) > greenValues[7] + buffer) {
+    count++;
+  }
+  if (chips[1].readADC(0) > greenValues[8] + buffer) {
+    count++;
+  }
+  if (chips[1].readADC(1) > greenValues[9] + buffer) {
+    count++;
+  }
+
+  return count;
+}
+
+int ColorSensor::countLeft() {
+  int count = 0;
+  if (chips[1].readADC(2) > greenValues[10] + buffer) {
+    count++;
+  }
+  if (chips[1].readADC(3) > greenValues[11] + buffer) {
+    count++;
+  }
+  if (chips[1].readADC(4) > greenValues[12] + buffer) {
+    count++;
+  }
+  if (chips[1].readADC(5) > greenValues[13] + buffer) {
+    count++;
+  }
+
+  return count;
+}
+
 float ColorSensor::isDetected() {
   int buffer = 50;
   int result = -1;
 
   // front detection
-  if (chips[1].readADC(6) > greenValues[14] + buffer || chips[1].readADC(7) > greenValues[15] + buffer || chips[0].readADC(0) > greenValues[0] + buffer || chips[0].readADC(1) > greenValues[1] + buffer) {
+  if (countFront() >= 2) {
     result = 180;
   }
   if ((chips[1].readADC(5) > greenValues[13] + buffer || chips[1].readADC(4) > greenValues[12] + buffer) 
@@ -49,31 +122,34 @@ float ColorSensor::isDetected() {
   }
 
   // right detection
-  if (chips[0].readADC(2) > greenValues[2] + buffer || chips[0].readADC(3) > greenValues[3] + buffer || chips[0].readADC(4) > greenValues[4] + buffer || chips[0].readADC(5) > greenValues[5] + buffer) {
+  if (countRight() >= 2) {
     result = 90;
   }
   if ((chips[0].readADC(1) > greenValues[1] + buffer || chips[0].readADC(0) > greenValues[0] + buffer) 
   && (chips[0].readADC(6) > greenValues[6] + buffer || chips[0].readADC(7) > greenValues[7] + buffer)) 
   {
+    Serial.println("forced 90");
     return 90;
   }
 
   // back detection
-  if (chips[0].readADC(6) > greenValues[6] + buffer || chips[0].readADC(7) > greenValues[7] + buffer || chips[1].readADC(0) > greenValues[8] + buffer || chips[1].readADC(1) > greenValues[9] + buffer) {
+  if (countBack() >= 1) {
     result = 0;
   }
   if ((chips[0].readADC(4) > greenValues[4] + buffer || chips[0].readADC(5) > greenValues[5] + buffer) 
   && (chips[1].readADC(2) > greenValues[10] + buffer || chips[1].readADC(3) > greenValues[11] + buffer)) {
+    Serial.println("forced 0");
     return 0;
   }
 
   // left detection
-  if (chips[1].readADC(2) > greenValues[10] + buffer || chips[1].readADC(3) > greenValues[11] + buffer || chips[1].readADC(4) > greenValues[12] + buffer || chips[1].readADC(5) > greenValues[13] + buffer) {
+  if (countLeft() >= 2) {
     result = 270;
   }
   if ((chips[1].readADC(6) > greenValues[14] + buffer || chips[1].readADC(7) > greenValues[15] + buffer)
   && (chips[1].readADC(0) > greenValues[8] + buffer || chips[1].readADC(1) > greenValues[9] + buffer)) 
   {
+    Serial.println("forced 270");
     return 270;
   }
 

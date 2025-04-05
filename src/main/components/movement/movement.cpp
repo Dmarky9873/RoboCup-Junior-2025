@@ -110,7 +110,7 @@ void Movement::move(double theta, int maxSpeed, bool avoid) {
   // Serial.println(map(speeds[0] + spin_index, 0, 300, 0, maxSpeed));
 
   // Serial.println(speeds[0] + spin_index);
-  motor_FR.spin(map(speeds[0] + spin_index, -255, 255, -maxSpeed, maxSpeed));
+    motor_FR.spin(map(speeds[0] + spin_index, -255, 255, -maxSpeed, maxSpeed));
   motor_BR.spin(map(speeds[1] + spin_index, -255, 255, -maxSpeed, maxSpeed));
   motor_BL.spin(map(speeds[2] + spin_index, -255, 255, -maxSpeed, maxSpeed));
   motor_FL.spin(map(speeds[3] + spin_index, -255, 255, -maxSpeed, maxSpeed));

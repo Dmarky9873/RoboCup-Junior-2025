@@ -11,7 +11,7 @@ ColorSensor c;
 
 //me: hay...bale, bale: wsg twin sybau ts ts ts pmo 
 void attack_w_color_sensor() {
-  int speed = 170;
+  int speed = 150;
   // daniel is the goat
 
   float curr_ball_angle = ir.getBallAngle();
@@ -23,7 +23,7 @@ void attack_w_color_sensor() {
     // Serial.println("oob");
     m.brake();
     m.move(colorDetected, speed + 30, true);
-    delay(200);
+    delay(100);
     colorDetected = c.isDetected();
   }
 }

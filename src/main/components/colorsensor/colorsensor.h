@@ -13,6 +13,10 @@ class ColorSensor {
     float isDetected();
 
   private:
+    int countFront();
+    int countRight();
+    int countBack();
+    int countLeft();
     Adafruit_MCP3008 chips[NUM_CHIPS];
 };
 
