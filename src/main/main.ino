@@ -43,8 +43,8 @@ void loop() {
   // // Serial.println(ballAngle > 180 ? ballAngle - 360 : ballAngle);
   // m.move(ballAngle, speed, false);
 
-  // m.debug_sees_border();
-  attack_w_color_sensor();
+  m.debug_sees_border();
+  // attack_w_color_sensor();
   // m.debug();
   
   delay(50);
