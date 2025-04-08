@@ -26,7 +26,7 @@ class Movement {
     // Motor motor_FL{6, 7};
     // Motor motor_BR{5, 4};
 
-    //2 (fries in the bag)
+    // //2 (fries in the bag)
     Motor motor_BL{0, 1}; 
     Motor motor_FR{3, 2};
     Motor motor_FL{4, 5};

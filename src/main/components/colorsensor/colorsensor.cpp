@@ -108,7 +108,7 @@ int ColorSensor::countLeft() {
 }
 
 float ColorSensor::isDetected() {
-  int buffer = 50;
+  int buffer = 100;
   int result = -1;
 
   // front detection
@@ -153,7 +153,7 @@ float ColorSensor::isDetected() {
     return 270;
   }
 
-  Serial.println(result);
+  //Serial.println(result);
 
   return result;
 
