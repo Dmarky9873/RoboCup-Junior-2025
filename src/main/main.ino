@@ -37,14 +37,14 @@ void setup() {
 }
 
 void loop() {
-  // int speed = 200;
+  // int speed = 210;
   // float ballAngle = ir.getBallAngle();
   // // Serial.print("ballAngle: ");
   // // Serial.println(ballAngle > 180 ? ballAngle - 360 : ballAngle);
   // m.move(ballAngle, speed, false);
 
-  // m.debug_sees_border();
-  attack_w_color_sensor();
+  m.debug_sees_border();
+  // attack_w_color_sensor();
   // m.debug();
   
   delay(50);
