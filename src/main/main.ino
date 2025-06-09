@@ -8,6 +8,7 @@
 Movement m;
 IR ir;
 ColorSensor c;
+Compass cmp;
 
 //me: hay...bale, bale: wsg twin sybau ts ts ts pmo 
 void attack_w_color_sensor() {
@@ -34,6 +35,7 @@ void setup() {
   ir.initIR();
   c.init();
   m.initMovement();
+  cmp.initialize();
 }
 
 void loop() {
@@ -43,11 +45,17 @@ void loop() {
   // // Serial.println(ballAngle > 180 ? ballAngle - 360 : ballAngle);
   // m.move(ballAngle, speed, false);
 
-  m.debug_sees_border();
+  // m.debug_sees_border();
+  // c.printReadings();
+  Serial.println(cmp.readCompass());
+  delay(100);
   // attack_w_color_sensor();
-  // m.debug();
+  // // m.debug();
+
+  // m.rotate_motor(-200, "FL");
+  // m.move(0, 200, false);
   
-  delay(50);
+  // delay(50);
 }
 
 

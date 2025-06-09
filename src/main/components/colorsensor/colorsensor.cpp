@@ -1,7 +1,7 @@
 #include <SPI.h>
 #include "colorsensor.h"
 
-const int csPins[] = {36, 10};
+const int csPins[] = {36, 37};
 const int buffer = 50;
 
 // change these values when adjusting to new field
@@ -16,6 +16,7 @@ void ColorSensor::init() {
 
   for (int i = 0; i < 16; i++) {
     greenValues[i] = chips[i/8].readADC(i%8);
+    
   }
 }
 
@@ -27,12 +28,13 @@ void ColorSensor::printReadings() {
     Serial.println();
     for (int j = 0; j < NUM_CHANNELS; j++) {
       int val = chips[i].readADC(j);
-      Serial.print("Channel ");
       Serial.print(j);
       Serial.print(": ");
-      Serial.println(val);
+      Serial.print(val);
+      Serial.print("\t");
     }
   }
+    Serial.println();
 }
 
 int ColorSensor::countFront() {

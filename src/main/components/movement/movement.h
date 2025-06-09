@@ -1,3 +1,4 @@
+#include "WString.h"
 #ifndef MOVEMENT_H
 #define MOVEMENT_H
 
@@ -15,16 +16,17 @@ class Movement {
     void rotate(int speed);
     void debug_sees_border();
     bool is_on_border();
+    void rotate_motor(int speed, String motor);
 
   private:
     Compass compass;
     ColorSensor colorSensor;
 
     // 1
-    // Motor motor_BL{2, 3}; 
-    // Motor motor_FR{1, 0};
-    // Motor motor_FL{6, 7};
-    // Motor motor_BR{5, 4};
+    Motor motor_BR{1, 2}; // good
+    Motor motor_FR{4, 3}; // good
+    Motor motor_BL{6, 5}; // good
+    Motor motor_FL{8, 7}; // good
 
     // //2 (fries in the bag)
     Motor motor_BL{0, 1}; 

@@ -1,23 +1,32 @@
 #include "compass.h"
 
-const unsigned int COMPASS_BUFF = 15;
+void Compass::initialize() {
+  Wire.begin();
+  if (!bno.begin()) {
+    Serial.println("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
+    while (1)
+      ;
+  }
+  bno.setExtCrystalUse(true);
+  bno.setMode(OPERATION_MODE_NDOF);
+  delay(500);
 
-void Compass::initialize()
-{
-    bno = Adafruit_BNO055(55);
-    if (!bno.begin())
-    {
-        Serial.println("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
-        while (1)
-            ;
-    }
-    bno.setExtCrystalUse(true);
+  // uint8_t system, gyro, accel, mag;
+  // bno.getCalibration(&system, &gyro, &accel, &mag);
+  // Serial.print("CALIBRATION: Sys=");
+  // Serial.print(system);
+  // Serial.print(" Gyro=");
+  // Serial.print(gyro);
+  // Serial.print(" Accel=");
+  // Serial.print(accel);
+  // Serial.print(" Mag=");
+  // Serial.println(mag);
 }
 
-float Compass::readCompass()
-{
-    sensors_event_t event;
-    bno.getEvent(&event);
-    int angle = event.orientation.x;
-    return (angle > 180) ? angle - 360 : angle;
+float Compass::readCompass() {
+
+  sensors_event_t event;
+  bno.getEvent(&event);
+  int angle = event.orientation.x;
+  return (angle > 180) ? angle - 360 : angle;
 }

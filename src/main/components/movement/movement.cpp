@@ -1,3 +1,4 @@
+#include "WString.h"
 #include "movement.h"
 #include <math.h>
 
@@ -34,6 +35,18 @@ void Movement::rotate(int speed) {
   motor_BR.spin(speed);
   motor_BL.spin(speed);
   motor_FL.spin(speed);
+}
+
+void Movement::rotate_motor(int speed, String motor) {
+  if (motor == "FR") {
+    motor_FR.spin(speed);
+  } else if (motor == "BR") {
+    motor_BR.spin(speed);
+  } else if (motor == "BL") {
+    motor_BL.spin(speed);
+  } else if (motor == "FL") {
+    motor_FL.spin(speed);
+  }
 }
 
 void Movement::move(double theta, int maxSpeed, bool avoid) {
