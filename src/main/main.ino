@@ -10,7 +10,7 @@ IR ir;
 ColorSensor c;
 Compass cmp;
 
-//me: hay...bale, bale: wsg twin sybau ts ts ts pmo 
+//me: hay...bale, bale: wsg twin sybau ts ts ts pmo
 void attack_w_color_sensor() {
   int speed = 150;
   // daniel is the goatZtyuil,mmnb ,mnbvc
@@ -19,8 +19,8 @@ void attack_w_color_sensor() {
   m.move(curr_ball_angle, speed, false);
 
   float colorDetected = c.isDetected();
-  
-  while(colorDetected != -1) {
+
+  while (colorDetected != -1) {
     // Serial.println("oob");
     m.brake();
     m.move(colorDetected, speed + 20, true);
@@ -54,11 +54,6 @@ void loop() {
 
   // m.rotate_motor(-200, "FL");
   // m.move(0, 200, false);
-  
+
   // delay(50);
 }
-
-
-
-
-
