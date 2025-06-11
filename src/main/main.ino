@@ -39,7 +39,7 @@ void setup() {
 }
 
 void loop() {
-  // int speed = 180       `;
+  // int speed = 180;
   // float ballAngle = ir.getBallAngle();
   // // Serial.print("ballAngle: ");
   // // Serial.println(ballAngle > 180 ? ballAngle - 360 : ballAngle);
@@ -47,7 +47,7 @@ void loop() {
 
   // m.debug_sees_border();
   // c.printReadings();
-  Serial.println(cmp.readCompass());
+  // Serial.println(cmp.readCompass());
   delay(100);
   // attack_w_color_sensor();
   // // m.debug();

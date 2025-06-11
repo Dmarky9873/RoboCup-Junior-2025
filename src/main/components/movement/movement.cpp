@@ -64,8 +64,8 @@ void Movement::move(double theta, int maxSpeed, bool avoid) {
   float spin_index = 0;
 
   // point north
-  int MINOR_ADJUSTMENT_WINDOW = 70;
-  int COMPASS_MAJOR_ADJUSTMENT_SPEED = 30;
+  // int MINOR_ADJUSTMENT_WINDOW = 70;
+  // int COMPASS_MAJOR_ADJUSTMENT_SPEED = 30;
 
   if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, reading)) {
     float speed = min + (abs(reading) / 180) * (maxRotation);

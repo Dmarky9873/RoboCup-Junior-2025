@@ -16,8 +16,9 @@ void ColorSensor::init() {
 
   for (int i = 0; i < 16; i++) {
     greenValues[i] = chips[i/8].readADC(i%8);
-    
   }
+
+  
 }
 
 void ColorSensor::printReadings() {
