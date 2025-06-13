@@ -4,11 +4,13 @@
 #include "./components/movement/movement.cpp"
 #include "./components/colorsensor/colorsensor.h"
 #include "./components/colorsensor/colorsensor.cpp"
+#include "./components/camera/camera.h"
 
 Movement m;
 IR ir;
 ColorSensor c;
 Compass cmp;
+Camera camera(70.0);
 
 //me: hay...bale, bale: wsg twin sybau ts ts ts pmo
 void attack_w_color_sensor() {
@@ -36,6 +38,10 @@ void setup() {
   c.init();
   m.initMovement();
   cmp.initialize();
+
+  camera.initialize();
+
+  pinMode(30, OUTPUT);
 }
 
 void loop() {
@@ -45,15 +51,17 @@ void loop() {
   // // Serial.println(ballAngle > 180 ? ballAngle - 360 : ballAngle);
   // m.move(ballAngle, speed, false);
 
+  // ir.printPWsArr();
+  // Serial.println("hello");
+  camera.printStatus();
+
+  // m.move(0, 200, false);
+  // m.rotate_motor(200, "BR");
+
   // m.debug_sees_border();
   // c.printReadings();
   // Serial.println(cmp.readCompass());
+
   delay(100);
   // attack_w_color_sensor();
-  // // m.debug();
-
-  // m.rotate_motor(-200, "FL");
-  // m.move(0, 200, false);
-
-  // delay(50);
 }

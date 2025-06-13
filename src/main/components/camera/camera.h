@@ -1,10 +1,11 @@
+#include <Pixy2SPI_SS.h>
+
 //Kyle Andersen 2025
 
-#include <Pixy2I2C.h>
 
 class Camera {
 private:
-  Pixy2I2C pixy;
+  Pixy2SPI_SS pixy;
   int32_t centerX;
   int32_t middleThreshold;
   float fov;
@@ -20,7 +21,7 @@ public:
     : fov(fieldOfView), middleThreshold(threshold) {}
 
   void initialize() {
-    Serial.begin(115200);
+    Serial.println("camera initialization begun");
     pixy.init();
     frameWidth = pixy.frameWidth;
     centerX = frameWidth / 2;
@@ -33,6 +34,7 @@ public:
         focalLength = (detectedWidth * referenceDistance) / knownWidthOfObject;
       }
     }
+    Serial.println("camera initialization finished");
   }
 
 

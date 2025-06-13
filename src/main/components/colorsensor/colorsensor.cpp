@@ -28,7 +28,7 @@ void ColorSensor::printReadings() {
     Serial.print(i + 1);
     Serial.println();
     for (int j = 0; j < NUM_CHANNELS; j++) {
-      int val = chips[i].readADC(j);
+      float val = chips[i].readADC(j);
       Serial.print(j);
       Serial.print(": ");
       Serial.print(val);
