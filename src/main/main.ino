@@ -13,23 +13,23 @@ Compass cmp;
 Camera camera(70.0);
 
 //me: hay...bale, bale: wsg twin sybau ts ts ts pmo
-void attack_w_color_sensor() {
-  int speed = 150;
-  // daniel is the goatZtyuil,mmnb ,mnbvc
+// void attack_w_color_sensor() {
+//   int speed = 150;
+//   // daniel is the goatZtyuil,mmnb ,mnbvc
 
-  float curr_ball_angle = ir.getBallAngle();
-  m.move(curr_ball_angle, speed, false);
+//   float curr_ball_angle = ir.getBallAngle();
+//   m.move(curr_ball_angle, speed, false);
 
-  float colorDetected = c.isDetected();
+//   float colorDetected = c.isDetected();
 
-  while (colorDetected != -1) {
-    // Serial.println("oob");
-    m.brake();
-    m.move(colorDetected, speed + 20, true);
-    delay(100);
-    colorDetected = c.isDetected();
-  }
-}
+//   while (colorDetected != -1) {
+//     // Serial.println("oob");
+//     m.brake();
+//     m.move(colorDetected, speed + 20, true);
+//     delay(100);
+//     colorDetected = c.isDetected();
+//   }
+// }
 
 
 void setup() {
@@ -41,19 +41,32 @@ void setup() {
 
   camera.initialize();
 
-  pinMode(30, OUTPUT);
 }
 
 void loop() {
-  // int speed = 180;
-  // float ballAngle = ir.getBallAngle();
+  int speed = 180;
+  float ballAngle = ir.getBallAngle();
   // // Serial.print("ballAngle: ");
   // // Serial.println(ballAngle > 180 ? ballAngle - 360 : ballAngle);
-  // m.move(ballAngle, speed, false);
+  float camAngle = camera.calculateRotationAngle();
 
-  // ir.printPWsArr();
+  // Serial.print("Camera range: ");
+  // Serial.print(camAngle - 7);
+  // Serial.print(" - ");
+  // Serial.print(camAngle + 7);
+  // Serial.println(camAngle);
+
+  //   Serial.print("reading: ");
+  // Serial.print(cmp.readCompass());
+  // Serial.print(" camangle: ");
+  // Serial.println(camAngle);
+  // m.move(ballAngle, speed, false, camAngle);
+  // m.rotate_motor(100, "BR");
+  m.move(camAngle, 200, false, 0);
+
   // Serial.println("hello");
-  camera.printStatus();
+
+  // ir.printReadingsArr();
 
   // m.move(0, 200, false);
   // m.rotate_motor(200, "BR");
@@ -61,6 +74,7 @@ void loop() {
   // m.debug_sees_border();
   // c.printReadings();
   // Serial.println(cmp.readCompass());
+  // Serial.println(ballAngle);
 
   delay(100);
   // attack_w_color_sensor();

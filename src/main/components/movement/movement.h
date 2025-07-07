@@ -12,7 +12,7 @@ class Movement {
     void initMovement();
     void debug();
     void brake();
-    void move(double theta, int maxSpeed, bool avoid);
+    void move(double theta, int maxSpeed, bool avoid, float cameraRotationAngle);
     void rotate(int speed);
     void debug_sees_border();
     bool is_on_border();
