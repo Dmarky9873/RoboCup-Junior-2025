@@ -44,11 +44,19 @@ void setup() {
 }
 
 void loop() {
-  int speed = 180;
+  int speed = 150;
   float ballAngle = ir.getBallAngle();
   // // Serial.print("ballAngle: ");
   // // Serial.println(ballAngle > 180 ? ballAngle - 360 : ballAngle);
+
+  // round to nearest 30 degree interval
+  float rBallAngle = floor(ballAngle / 30.0) * 30.0;
+  if (ballAngle == -1) {
+    rBallAngle = -1;
+  }
+
   float camAngle = camera.calculateRotationAngle();
+  Serial.println(camAngle);
 
   // Serial.print("Camera range: ");
   // Serial.print(camAngle - 7);
@@ -62,7 +70,7 @@ void loop() {
   // Serial.println(camAngle);
   // m.move(ballAngle, speed, false, camAngle);
   // m.rotate_motor(100, "BR");
-  m.move(camAngle, 200, false, 0);
+  m.move(rBallAngle, speed, false, camAngle);
 
   // Serial.println("hello");
 

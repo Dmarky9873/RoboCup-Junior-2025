@@ -35,7 +35,7 @@ class Movement {
     // Motor motor_BR{7, 6};
 
     bool isBetween(int lower, int upper, int x);
-    const unsigned int COMPASS_BUFF = 8;
+    const unsigned int COMPASS_BUFF = 5;
 
 };
 

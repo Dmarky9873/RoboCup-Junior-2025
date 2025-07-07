@@ -58,8 +58,8 @@ void Movement::move(double theta, int maxSpeed, bool avoid, float cameraRotation
   float reading = compass.readCompass();
 
   theta = theta + 180;
-  float maxRotation = maxSpeed * 0.7;
-  float min = 20;
+  float maxRotation = maxSpeed * 0.3;
+  float min = 10;
 
   float spin_index = 0;
 
@@ -67,28 +67,20 @@ void Movement::move(double theta, int maxSpeed, bool avoid, float cameraRotation
   // int MINOR_ADJUSTMENT_WINDOW = 70;
   // int COMPASS_MAJOR_ADJUSTMENT_SPEED = 30;
 
-  if (abs(cameraRotationAngle) < 3) {
-    if (!isBetween((0) - COMPASS_BUFF, (0) + COMPASS_BUFF, reading)) {
-      float speed = min + (abs(reading) / 100) * (maxRotation);
-      if (reading < 0) {
-        speed = speed * -1;
-      }
-      spin_index = speed;
+  if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, cameraRotationAngle)) {
+    float speed = min + (abs(reading) / 100) * (maxRotation);
+    if (reading < 0) {
+      speed = speed * -1;
     }
-  } else {
-    if (cameraRotationAngle > 0) {
-      spin_index = (-25);
-    } else if (cameraRotationAngle < 0) {
-      spin_index = (25);
-    }
+    spin_index = speed;
   }
 
-  // catching ball
+  // // catching ball
   // if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta) && !avoid) {
   //   if (theta <= 180) {
-  //     theta = theta + 30;
+  //     theta = theta + 5;
   //   } else {
-  //     theta = theta - 30;
+  //     theta = theta - 15;
   //   }
   // }
 
@@ -118,17 +110,17 @@ void Movement::move(double theta, int maxSpeed, bool avoid, float cameraRotation
   // Serial.println(reading);
 
   // Serial.println(map(speeds[0] + spin_index, 0, 300, 0, maxSpeed));
-  Serial.println(spin_index);
+  // Serial.println(spin_index);
 
   // Serial.println(speeds[0] + spin_index);
   motor_FR.spin(map(speeds[0] + spin_index, -(maxSpeed + maxRotation), maxSpeed + maxRotation, -maxSpeed, maxSpeed));
   motor_BR.spin(map(speeds[1] + spin_index, -(maxSpeed + maxRotation), maxSpeed + maxRotation, -maxSpeed, maxSpeed));
   motor_BL.spin(map(speeds[2] + spin_index, -(maxSpeed + maxRotation), maxSpeed + maxRotation, -maxSpeed, maxSpeed));
   motor_FL.spin(map(speeds[3] + spin_index, -(maxSpeed + maxRotation), maxSpeed + maxRotation, -maxSpeed, maxSpeed));
-  Serial.println(map(speeds[0] + spin_index, -(maxSpeed + maxRotation), maxSpeed + maxRotation, -maxSpeed, maxSpeed));
-  Serial.println(map(speeds[1] + spin_index, -(maxSpeed + maxRotation), maxSpeed + maxRotation, -maxSpeed, maxSpeed));
-  Serial.println(map(speeds[2] + spin_index, -(maxSpeed + maxRotation), maxSpeed + maxRotation, -maxSpeed, maxSpeed));
-  Serial.println(map(speeds[3] + spin_index, -(maxSpeed + maxRotation), maxSpeed + maxRotation, -maxSpeed, maxSpeed));
+  // Serial.println(map(speeds[0] + spin_index, -(maxSpeed + maxRotation), maxSpeed + maxRotation, -maxSpeed, maxSpeed));
+  // Serial.println(map(speeds[1] + spin_index, -(maxSpeed + maxRotation), maxSpeed + maxRotation, -maxSpeed, maxSpeed));
+  // Serial.println(map(speeds[2] + spin_index, -(maxSpeed + maxRotation), maxSpeed + maxRotation, -maxSpeed, maxSpeed));
+  // Serial.println(map(speeds[3] + spin_index, -(maxSpeed + maxRotation), maxSpeed + maxRotation, -maxSpeed, maxSpeed));
   // motor_BR.spin(spin_index);
   // motor_BL.spin(spin_index);
   // motor_FL.spin(spin_index);
