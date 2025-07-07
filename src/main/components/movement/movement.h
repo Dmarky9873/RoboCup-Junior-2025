@@ -12,7 +12,7 @@ class Movement {
     void initMovement();
     void debug();
     void brake();
-    void move(double theta, int maxSpeed, bool avoid);
+    void move(double theta, int maxSpeed, bool avoid, float cameraRotationAngle);
     void rotate(int speed);
     void debug_sees_border();
     bool is_on_border();
@@ -29,10 +29,10 @@ class Movement {
     Motor motor_FL{8, 7}; // good
 
     // //2 (fries in the bag)
-    Motor motor_BL{0, 1}; 
-    Motor motor_FR{3, 2};
-    Motor motor_FL{4, 5};
-    Motor motor_BR{7, 6};
+    // Motor motor_BL{0, 1}; 
+    // Motor motor_FR{3, 2};
+    // Motor motor_FL{4, 5};
+    // Motor motor_BR{7, 6};
 
     bool isBetween(int lower, int upper, int x);
     const unsigned int COMPASS_BUFF = 8;
