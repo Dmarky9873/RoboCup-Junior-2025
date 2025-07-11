@@ -39,7 +39,6 @@ void setup() {
   cmp.initialize();
 
   camera.initialize();
-
 }
 
 void loop() {
@@ -48,7 +47,16 @@ void loop() {
 
   // float camAngle = camera.calculateRotationAngle();
 
-  // m.move(ballAngle, speed, false, camAngle);
+  int angles[] = { 0, 180, 45, 225, 90, 270, 135, 315, 180, 0, 225, 45, 270, 90, 315, 135 };
+
+  for (int i = 0; i < 16; i++) {
+    m.basic_move_with_compass(angles[i], speed);
+    delay(500);
+    m.brake();
+    delay(200);  // small pause between directions
+  }
+
+
 
 
   delay(100);
