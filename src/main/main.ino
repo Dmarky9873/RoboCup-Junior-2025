@@ -49,6 +49,8 @@ void loop() {
 
   int angles[] = { 0, 180, 45, 225, 90, 270, 135, 315, 180, 0, 225, 45, 270, 90, 315, 135 };
 
+  Serial.println(camAngle);
+
   // for (int i = 0; i < 16; i++) {
   //   m.basic_move_with_compass(angles[i], speed);
   //   delay(500);
@@ -56,7 +58,8 @@ void loop() {
   //   delay(200);  // small pause between directions
   // }
 
-  m.basic_move_with_compass_and_camera(0, speed, camAngle);
+  // m.basic_move_with_compass_and_camera(0, speed, camAngle);
+  m.basic_move_with_compass(0, speed);
 
 
 
