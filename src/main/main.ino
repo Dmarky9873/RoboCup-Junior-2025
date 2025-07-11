@@ -49,8 +49,6 @@ void loop() {
   // float camAngle = camera.calculateRotationAngle();
 
   // m.move(ballAngle, speed, false, camAngle);
-  // m.basic_move(0, speed);
-  m.rotate_motor(-speed, "FL");
 
 
   delay(100);

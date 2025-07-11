@@ -24,10 +24,10 @@ class Movement {
     ColorSensor colorSensor;
 
     // 1
-    Motor motor_BR{5, 6}; // Correct
-    Motor motor_FR{8, 7}; // Correct
-    Motor motor_BL{4, 3}; // Correct
-    Motor motor_FL{2, 1}; 
+    Motor motor_BR{6, 5}; 
+    Motor motor_FR{7, 8}; 
+    Motor motor_BL{3, 4}; 
+    Motor motor_FL{1, 2}; 
 
     // //2 (fries in the bag)
     // Motor motor_BR{5, 6};
