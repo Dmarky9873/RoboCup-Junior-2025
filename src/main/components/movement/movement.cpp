@@ -144,8 +144,6 @@ void Movement::basic_move_with_compass_and_camera(double theta,
   } else {
     // compute signed compass error to north
     error = heading;
-    if (error > 180.0) error -= 360.0;
-    else if (error < -180.0) error += 360.0;
   }
 
   // 3. Dead-zone and proportional gain

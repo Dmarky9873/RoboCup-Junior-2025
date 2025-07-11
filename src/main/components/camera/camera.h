@@ -1,3 +1,4 @@
+#include <cmath>
 #include <Pixy2SPI_SS.h>
 
 //Kyle Andersen 2025
@@ -57,7 +58,7 @@ public:
         return (knownWidthOfObject * focalLength) / detectedWidth;
       }
     }
-    return -1;
+    return 999;
   }
 
 
