@@ -49,6 +49,32 @@ void Movement::rotate_motor(int speed, String motor) {
   }
 }
 
+
+void Movement::basic_move(double theta, int maxSpeed) {
+
+  if (theta == -1) {
+    brake();
+    return;
+  }
+
+
+  // float reading = compass.readCompass();
+
+  double speeds[4] = {
+    maxSpeed * sin(((theta - 90 + 40) * M_PI) / 180) + spin_index,  // TR
+    maxSpeed * sin(((theta - 90 - 40) * M_PI) / 180) + spin_index,  // BR
+    maxSpeed * sin(((theta + 90 + 40) * M_PI) / 180) + spin_index,  // BL
+    maxSpeed * sin(((theta + 90 - 40) * M_PI) / 180) + spin_index   // TL
+  };
+
+  motor_FR.spin(speeds[0]);
+  motor_BR.spin(speeds[1]);
+  motor_BL.spin(speeds[2]);
+  motor_FL.spin(speeds[3]);
+
+
+}
+
 void Movement::move(double theta, int maxSpeed, bool avoid, float cameraRotationAngle) {
   if (theta == -1) {
     brake();

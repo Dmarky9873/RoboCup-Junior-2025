@@ -43,39 +43,15 @@ void setup() {
 }
 
 void loop() {
-  int speed = 150;
+  int speed = 200;
   float ballAngle = ir.getBallAngle();
-  // // Serial.print("ballAngle: ");
-  // // Serial.println(ballAngle > 180 ? ballAngle - 360 : ballAngle);
 
-  float camAngle = camera.calculateRotationAngle();
-  // Serial.println(camAngle);
+  // float camAngle = camera.calculateRotationAngle();
 
-  // Serial.print("Camera range: ");
-  // Serial.print(camAngle - 7);
-  // Serial.print(" - ");
-  // Serial.print(camAngle + 7);
-  // Serial.println(camAngle);
-
-  //   Serial.print("reading: ");
-  // Serial.print(cmp.readCompass());
-  // Serial.print(" camangle: ");
-  // Serial.println(camAngle);
   // m.move(ballAngle, speed, false, camAngle);
-  // m.rotate_motor(100, "FR");
-  m.move(ballAngle, speed, false, camAngle);
+  // m.basic_move(0, speed);
+  m.rotate_motor(-speed, "FL");
 
-  // Serial.println("hello");
-
-  // ir.printReadingsArr();
-
-  // m.move(0, 200, false);
-  // m.rotate_motor(200, "BR");
-
-  // m.debug_sees_border();
-  // c.printReadings();
-  // Serial.println(cmp.readCompass());
-  // Serial.println(ballAngle);
 
   delay(100);
   // attack_w_color_sensor();
