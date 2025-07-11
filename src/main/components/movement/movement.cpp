@@ -152,7 +152,7 @@ void Movement::basic_move_with_compass_and_camera(double theta,
   double headingCorrection = 0.0;
   if (fabs(error) > deadzone) {
     // Negative sign so positive error → CCW bias, and vice versa
-    headingCorrection = -Kp * error;
+    headingCorrection = Kp * error;
   }
 
   // 4. Compute your original translation wheel speeds
