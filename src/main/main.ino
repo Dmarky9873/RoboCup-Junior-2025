@@ -12,24 +12,23 @@ ColorSensor c;
 Compass cmp;
 Camera camera(70.0);
 
-//me: hay...bale, bale: wsg twin sybau ts ts ts pmo
-// void attack_w_color_sensor() {
-//   int speed = 150;
-//   // daniel is the goatZtyuil,mmnb ,mnbvc
+void attack_w_color_sensor() {
+  int speed = 150;
 
-//   float curr_ball_angle = ir.getBallAngle();
-//   m.move(curr_ball_angle, speed, false);
+  float camAngle = camera.calculateRotationAngle();
+  float curr_ball_angle = ir.getBallAngle();
+  m.move(curr_ball_angle, speed, false, camAngle);
 
-//   float colorDetected = c.isDetected();
+  float colorDetected = c.isDetected();
 
-//   while (colorDetected != -1) {
-//     // Serial.println("oob");
-//     m.brake();
-//     m.move(colorDetected, speed + 20, true);
-//     delay(100);
-//     colorDetected = c.isDetected();
-//   }
-// }
+  while (colorDetected != -1) {
+    // Serial.println("oob");
+    m.brake();
+    m.move(colorDetected, speed, true, 0);
+    delay(100);
+    colorDetected = c.isDetected();
+  }
+}
 
 
 void setup() {
@@ -49,14 +48,8 @@ void loop() {
   // // Serial.print("ballAngle: ");
   // // Serial.println(ballAngle > 180 ? ballAngle - 360 : ballAngle);
 
-  // round to nearest 30 degree interval
-  float rBallAngle = floor(ballAngle / 30.0) * 30.0;
-  if (ballAngle == -1) {
-    rBallAngle = -1;
-  }
-
   float camAngle = camera.calculateRotationAngle();
-  Serial.println(camAngle);
+  // Serial.println(camAngle);
 
   // Serial.print("Camera range: ");
   // Serial.print(camAngle - 7);
@@ -69,8 +62,8 @@ void loop() {
   // Serial.print(" camangle: ");
   // Serial.println(camAngle);
   // m.move(ballAngle, speed, false, camAngle);
-  // m.rotate_motor(100, "BR");
-  m.move(rBallAngle, speed, false, camAngle);
+  // m.rotate_motor(100, "FR");
+  m.move(ballAngle, speed, false, camAngle);
 
   // Serial.println("hello");
 
