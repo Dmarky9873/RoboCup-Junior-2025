@@ -10,8 +10,6 @@ This repository contains the codebase for our custom-built soccer-playing robot,
 
 The robot is programmed using Arduino (C++) for embedded control and Python for simulation and debugging. The architecture is modular to allow for fast iteration and easier testing of individual components like movement, vision, and sensors.
 
-⸻
-
 ## Hardware Components
 
 ### 1. Movement
@@ -27,7 +25,6 @@ Controls the robot’s motion using four omnidirectional motors in an X configur
 	•	rotate(speed)
 	•	basic_move_with_compass_and_camera(theta, maxSpeed, camAngle)
 
-⸻
 
 ### 2. IR Sensor
 
@@ -38,7 +35,7 @@ Tracks the angle of the ball using a ring of 16 IR receivers mounted under the r
 	•	getReadingsArr()
 	•	initIR()
 
-⸻
+
 
 ### 3. Color Sensor
 
@@ -49,7 +46,7 @@ Reads field surface color to detect white boundary lines.
 	•	countFront(), countRight(), countBack(), countLeft()
 	•	printReadings()
 
-⸻
+
 
 ### 4. Camera
 
@@ -61,7 +58,7 @@ Uses a Pixy2 camera over SPI to track visual objects like the goal.
 	•	findDistance()
 	•	printStatus()
 
-⸻
+
 
 ### 5. Compass
 
@@ -71,7 +68,7 @@ An Adafruit BNO055 IMU is used for absolute orientation.
 	•	initialize()
 	•	readCompass()
 
-⸻
+
 
 ### 6. Kicker
 
@@ -81,7 +78,7 @@ Key functions:
 	•	performKick()
 	•	triggerKick()
 
-⸻
+
 
 #### 7. Time-of-Flight (TOF) Sensor
 
@@ -91,7 +88,7 @@ Key functions:
 	•	initialize()
 	•	GetBallRange()
 
-⸻
+
 
 ### 8. Python Tools
 
@@ -99,7 +96,7 @@ Used for debugging and visualization.
 	•	ir-emulator.py: Simulates IR input using Pygame.
 	•	reading_serial_monitor.py: Parses serial data from the Arduino.
 
-⸻
+
 
 ## How to Use
 
@@ -117,7 +114,7 @@ Used for debugging and visualization.
 	3.	Move accordingly while checking for white boundary lines.
 	4.	Kick when aligned with the ball and goal.
 
-⸻
+
 
 ## File Structure
 ```
@@ -153,27 +150,27 @@ src/
     reading_serial_monitor.py
 ```
 
-⸻
+
 
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-⸻
+
 
 ## Contributors
   - Daniel Markusson
   - Kyle Andersen
   - Jacky Zhang
 
-⸻
+
 
 ## Future Improvements
 	•	Improve object recognition and opponent tracking with the Pixy2.
 	•	Add kicker and dribbler to improve performance.
 	•	Develop a visual dashboard for real-time game data.
 
-⸻
+
 
 ## Contact
 
