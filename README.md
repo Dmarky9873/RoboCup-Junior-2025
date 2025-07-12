@@ -1,91 +1,123 @@
 # RoboCup-Junior-2025
 
+## What is RoboCup Junior?
+
+RoboCup Junior is an international robotics competition that encourages students to design, build, and program autonomous robots to complete specific challenges. In the Soccer division, robots must detect, chase, and kick a ball into a goal while avoiding opponents and staying within the field boundaries. It’s a fast-paced, dynamic event that tests engineering, coding, and problem-solving skills under real-time constraints.
+
+This repository contains the codebase for our custom-built soccer-playing robot, developed for the RoboCup Junior 2025 season. The robot is designed to navigate the field intelligently, track a ball, avoid boundaries, and interact with objects using a combination of sensors, motors, and algorithms.
+
 ## Overview
-This project is designed for the RoboCup Junior 2025 competition. It is a robotics project that integrates various sensors, actuators, and algorithms to create a robot capable of detecting, chasing, and interacting with objects in its environment. The robot is programmed using Arduino and Python, with modular components for easy development and debugging.
 
-## Components
+The robot is programmed using Arduino (C++) for embedded control and Python for simulation and debugging. The architecture is modular to allow for fast iteration and easier testing of individual components like movement, vision, and sensors.
 
-### 1. **Movement**
-The `Movement` module controls the robot's motors and enables it to move in different directions. It uses:
-- **Motors**: Four motors (`motor_BR`, `motor_FR`, `motor_BL`, `motor_FL`) are initialized with specific pins for clockwise and counter-clockwise rotation.
-- **Compass**: Integrated to ensure accurate directional movement.
-- **Color Sensor**: Used to detect borders and avoid obstacles.
+⸻
+
+## Hardware Components
+
+### 1. Movement
+
+Controls the robot’s motion using four omnidirectional motors in an X configuration.
+	•	Motors: Each wheel has two control pins for direction.
+	•	Compass: Ensures the robot maintains orientation.
+	•	Color Sensor: Detects the field’s white boundary to prevent out-of-bounds errors.
+
+#### Key functions:
+	•	move(theta, maxSpeed, avoid, cameraRotationAngle)
+	•	brake()
+	•	rotate(speed)
+	•	basic_move_with_compass_and_camera(theta, maxSpeed, camAngle)
+
+⸻
+
+### 2. IR Sensor
+
+Tracks the angle of the ball using a ring of 16 IR receivers mounted under the robot.
+
+#### Key functions:
+	•	getBallAngle()
+	•	getReadingsArr()
+	•	initIR()
+
+⸻
+
+### 3. Color Sensor
+
+Reads field surface color to detect white boundary lines.
+
+#### Key functions:
+	•	isDetected()
+	•	countFront(), countRight(), countBack(), countLeft()
+	•	printReadings()
+
+⸻
+
+### 4. Camera
+
+Uses a Pixy2 camera over SPI to track visual objects like the goal.
+
+#### Key functions:
+	•	initialize()
+	•	calculateRotationAngle()
+	•	findDistance()
+	•	printStatus()
+
+⸻
+
+### 5. Compass
+
+An Adafruit BNO055 IMU is used for absolute orientation.
+
+#### Key functions:
+	•	initialize()
+	•	readCompass()
+
+⸻
+
+### 6. Kicker
+
+Triggers a solenoid or mechanical mechanism to kick the ball.
 
 Key functions:
-- `move(theta, maxSpeed, avoid, cameraRotationAngle)`: Moves the robot in a specified direction.
-- `brake()`: Stops the robot.
-- `rotate(speed)`: Rotates the robot at a given speed.
-- `basic_move_with_compass_and_camera(theta, maxSpeed, camAngle)`: Combines compass and camera data for precise movement.
+	•	performKick()
+	•	triggerKick()
 
-### 2. **IR Sensor**
-The `IR` module detects the angle of the ball relative to the robot using infrared sensors. It uses:
-- **16 IR pins** to read signals.
+⸻
 
-Key functions:
-- `getBallAngle()`: Calculates the angle of the ball.
-- `getReadingsArr()`: Returns normalized readings from the IR sensors.
-- `initIR()`: Initializes the IR sensors.
+#### 7. Time-of-Flight (TOF) Sensor
 
-### 3. **Color Sensor**
-The `ColorSensor` module detects colors and helps the robot avoid borders or interact with specific objects.
+Uses a VL53L0X laser distance sensor to detect proximity (e.g., ball distance).
 
 Key functions:
-- `isDetected()`: Checks if a specific color is detected.
-- `countFront()`, `countRight()`, `countBack()`, `countLeft()`: Counts the number of color detections in different directions.
-- `printReadings()`: Prints sensor readings for debugging.
+	•	initialize()
+	•	GetBallRange()
 
-### 4. **Camera**
-The `Camera` module uses a Pixy2 camera to detect objects and calculate angles for movement.
+⸻
 
-Key functions:
-- `initialize()`: Initializes the camera.
-- `calculateRotationAngle()`: Calculates the angle for rotation based on detected objects.
-- `findDistance()`: Estimates the distance to detected objects.
-- `printStatus()`: Prints the camera's status.
+### 8. Python Tools
 
-### 5. **Compass**
-The `Compass` module uses an Adafruit BNO055 sensor to read the robot's orientation.
+Used for debugging and visualization.
+	•	ir-emulator.py: Simulates IR input using Pygame.
+	•	reading_serial_monitor.py: Parses serial data from the Arduino.
 
-Key functions:
-- `initialize()`: Initializes the compass.
-- `readCompass()`: Returns the robot's orientation angle.
-
-### 6. **Kicker**
-The `Kicker` module controls the robot's kicking mechanism.
-
-Key functions:
-- `performKick()`: Activates the kicker.
-- `triggerKick()`: Sets the kicker to be triggered.
-
-### 7. **Time-of-Flight (TOF) Sensor**
-The `TOF` module uses a VL53L0X sensor to measure the distance to objects.
-
-Key functions:
-- `initialize()`: Initializes the TOF sensor.
-- `GetBallRange()`: Returns the distance to the ball.
-
-### 8. **Python Scripts**
-Python scripts are used for debugging and emulating sensor data.
-- `ir-emulator.py`: Visualizes IR sensor data using Pygame.
-- `reading_serial_monitor.py`: Reads data from the serial monitor.
+⸻
 
 ## How to Use
 
 ### Setup
-1. Connect all components to the Arduino board as per the pin configurations in the code.
-2. Upload the `main.ino` file to the Arduino board.
-3. Run Python scripts for debugging if needed.
+	1.	Wire all components according to the wiring diagram (see src/main).
+	2.	Upload main.ino to the Teensy board via the Arduino IDE.
+	3.	Launch Python scripts (optional) for debugging and visualization.
 
-### Initialization
-In the `setup()` function:
-- Initialize all sensors and modules (IR, ColorSensor, Movement, Compass, Camera).
+### Initialization (setup())
+	•	Initializes all modules: IR, Color Sensor, Compass, Camera, Motors.
 
-### Main Loop
-The `loop()` function contains the robot's main logic:
-- Detect the ball using the IR sensor.
-- Calculate the rotation angle using the camera.
-- Move towards the ball using the movement module.
-- Avoid borders using the color sensor.
+### Main Loop (loop())
+	1.	Use IR to locate the ball.
+	2.	Use the camera to orient toward the goal.
+	3.	Move accordingly while checking for white boundary lines.
+	4.	Kick when aligned with the ball and goal.
+
+⸻
 
 ## File Structure
 ```
@@ -121,17 +153,28 @@ src/
     reading_serial_monitor.py
 ```
 
+⸻
+
 ## License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+⸻
 
 ## Contributors
-- **Daniel Markusson**
-- **Kyle Andersen**
+  - Daniel Markusson
+  - Kyle Andersen
+  - Jacky Zhang
+
+⸻
 
 ## Future Improvements
-- Enhance the camera module for better object detection.
-- Optimize movement algorithms for smoother navigation.
-- Add more debugging tools in Python.
+	•	Improve object recognition and opponent tracking with the Pixy2.
+	•	Add kicker and dribbler to improve performance.
+	•	Develop a visual dashboard for real-time game data.
+
+⸻
 
 ## Contact
-For questions or contributions, please contact Daniel Markusson at [email@example.com].
+
+For questions, contact Daniel Markusson at [markussondan@gmail.com].
