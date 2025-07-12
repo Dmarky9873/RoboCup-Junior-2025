@@ -174,4 +174,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Contact
 
-For questions, contact Daniel Markusson at [markussondan@gmail.com].
+For questions, contact Daniel Markusson at markussondan@gmail.com.
