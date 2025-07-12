@@ -17,7 +17,8 @@ class Movement {
     void debug_sees_border();
     bool is_on_border();
     void rotate_motor(int speed, String motor);
-    void basic_move(double theta, int maxSpeed);
+    void basic_move_with_compass(double theta, int maxSpeed);
+    void basic_move_with_compass_and_camera(double theta, int maxSpeed, float camAngle);
 
   private:
     Compass compass;

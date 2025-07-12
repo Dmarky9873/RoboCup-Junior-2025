@@ -1,3 +1,4 @@
+#include <cmath>  // for fabs(), isnan()
 #include "WString.h"
 #include "movement.h"
 #include <math.h>
@@ -50,29 +51,131 @@ void Movement::rotate_motor(int speed, String motor) {
 }
 
 
-void Movement::basic_move(double theta, int maxSpeed) {
+// void Movement::basic_move(double theta, int maxSpeed) {
+
+//   if (theta == -1) {
+//     brake();
+//     return;
+//   }
+
+
+//   // float reading = compass.readCompass();
+
+//   double speeds[4] = {
+//     maxSpeed * sin(((theta - 90 + 40) * M_PI) / 180) + spin_index,  // TR
+//     maxSpeed * sin(((theta - 90 - 40) * M_PI) / 180) + spin_index,  // BR
+//     maxSpeed * sin(((theta + 90 + 40) * M_PI) / 180) + spin_index,  // BL
+//     maxSpeed * sin(((theta + 90 - 40) * M_PI) / 180) + spin_index   // TL
+//   };
+
+//   motor_FR.spin(speeds[0]);
+//   motor_BR.spin(speeds[1]);
+//   motor_BL.spin(speeds[2]);
+//   motor_FL.spin(speeds[3]);
+
+
+// }
+
+void Movement::basic_move_with_compass(double theta, int maxSpeed) {
 
   if (theta == -1) {
     brake();
     return;
   }
 
+  // 1. Read current heading (° in [0,360)) relative to north
+  float heading = compass.readCompass();
+  double error = heading;
 
-  // float reading = compass.readCompass();
+  // 3. Dead-zone and proportional gain
+  const double deadzone = 5.0;  // ° within which we consider “on target”
+  const double Kp = 1;        // tuning parameter: larger→faster correction
 
-  double speeds[4] = {
-    maxSpeed * sin(((theta - 90 + 40) * M_PI) / 180) + spin_index,  // TR
-    maxSpeed * sin(((theta - 90 - 40) * M_PI) / 180) + spin_index,  // BR
-    maxSpeed * sin(((theta + 90 + 40) * M_PI) / 180) + spin_index,  // BL
-    maxSpeed * sin(((theta + 90 - 40) * M_PI) / 180) + spin_index   // TL
+  // 4. Compute rotational correction (zero inside dead-zone)
+  double headingCorrection = 0.0;
+  if (fabs(error) > deadzone) {
+    // Negative sign so that positive error (clockwise drift) yields counter-clockwise bias
+    headingCorrection = -Kp * error;
+  }
+
+  // 5. Existing translational wheel speeds (sinusoidal mixing)
+  double baseSpeeds[4] = {
+    maxSpeed * sin(((theta - 90 + 40) * M_PI) / 180.0),  // FR
+    maxSpeed * sin(((theta - 90 - 40) * M_PI) / 180.0),  // BR
+    maxSpeed * sin(((theta + 90 + 40) * M_PI) / 180.0),  // BL
+    maxSpeed * sin(((theta + 90 - 40) * M_PI) / 180.0)   // FL
   };
 
+  // 6. Mix translation, user spin_index, and heading‐correction bias
+  double speeds[4];
+  for (int i = 0; i < 4; ++i) {
+    speeds[i] = baseSpeeds[i]
+                + spin_index          // your existing rotation input
+                + headingCorrection;  // auto‐correction toward north
+  }
+
+  // 7. Command the motors
   motor_FR.spin(speeds[0]);
   motor_BR.spin(speeds[1]);
   motor_BL.spin(speeds[2]);
   motor_FL.spin(speeds[3]);
+}
 
 
+void Movement::basic_move_with_compass_and_camera(double theta,
+                                                  int maxSpeed,
+                                                  float camAngle) {
+  if (theta == -1) {
+    brake();
+    return;
+  }
+
+  // 1. Read current heading [0,360) relative to north
+  float heading = compass.readCompass();
+
+  // 2. Decide which “error” to correct:
+  //    - If camAngle is finite and within ±180°, we saw the net: use camAngle as error.
+  //    - Otherwise fall back to compass error relative to north(0°).
+  double error;
+  bool netVisible = !isnan(camAngle) && fabs(camAngle) <= 180.0;
+  if (netVisible) {
+    // camAngle already expresses “degrees away from facing net” (–180…+180)
+    error = camAngle;
+  } else {
+    // compute signed compass error to north
+    error = -heading;
+  }
+
+  // 3. Dead-zone and proportional gain
+  const double deadzone = 5.0;  // ±5° tolerated as “on target”
+  const double Kp = 1;        // tuning: bigger → faster swing back
+  double headingCorrection = 0.0;
+  if (fabs(error) > deadzone) {
+    // Negative sign so positive error → CCW bias, and vice versa
+    headingCorrection = Kp * error;
+  }
+
+  // 4. Compute your original translation wheel speeds
+  double baseSpeeds[4] = {
+    maxSpeed * sin(((theta - 90 + 40) * M_PI) / 180.0),  // FR
+    maxSpeed * sin(((theta - 90 - 40) * M_PI) / 180.0),  // BR
+    maxSpeed * sin(((theta + 90 + 40) * M_PI) / 180.0),  // BL
+    maxSpeed * sin(((theta + 90 - 40) * M_PI) / 180.0)   // FL
+  };
+
+  // 5. Mix translation + manual spin + auto-heading-correction
+  double speeds[4];
+  for (int i = 0; i < 4; ++i) {
+    speeds[i] = baseSpeeds[i]
+                + spin_index          // your existing user‐spin input
+                + headingCorrection;  // automatic swing back to net/north
+  }
+
+  // 6. Drive the motors
+  motor_FR.spin(speeds[0]);
+  motor_BR.spin(speeds[1]);
+  motor_BL.spin(speeds[2]);
+  motor_FL.spin(speeds[3]);
 }
 
 void Movement::move(double theta, int maxSpeed, bool avoid, float cameraRotationAngle) {
@@ -108,11 +211,11 @@ void Movement::move(double theta, int maxSpeed, bool avoid, float cameraRotation
 
   // wrap error to [-180, 180]
   if (error > 180) {
-      error -= 360;
+    error -= 360;
   } else if (error < -180) {
-      error += 360;
+    error += 360;
   }
-  
+
   integral += error;
   float derivative = error - lastError;
 
@@ -167,7 +270,7 @@ void Movement::move(double theta, int maxSpeed, bool avoid, float cameraRotation
   }
 
   if (max != 0 && max < maxSpeed) {
-    double scale = (double) (maxSpeed/max);
+    double scale = (double)(maxSpeed / max);
     for (int i = 0; i < 4; i++) {
       speeds[i] *= scale;
     }
@@ -200,10 +303,14 @@ void Movement::move(double theta, int maxSpeed, bool avoid, float cameraRotation
   motor_BL.spin(speeds[2]);
   motor_FL.spin(speeds[3]);
 
-  Serial.print("TR: "); Serial.println(speeds[0]);
-  Serial.print("BR: "); Serial.println(speeds[1]);
-  Serial.print("TL: "); Serial.println(speeds[2]);
-  Serial.print("BL "); Serial.println(speeds[3]);
+  Serial.print("TR: ");
+  Serial.println(speeds[0]);
+  Serial.print("BR: ");
+  Serial.println(speeds[1]);
+  Serial.print("TL: ");
+  Serial.println(speeds[2]);
+  Serial.print("BL ");
+  Serial.println(speeds[3]);
   Serial.println();
   // motor_BR.spin(spin_index);
   // motor_BL.spin(spin_index);
