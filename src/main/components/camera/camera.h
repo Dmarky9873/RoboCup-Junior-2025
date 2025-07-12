@@ -69,7 +69,7 @@ public:
       float anglePerPixel = fov / frameWidth;
       return (midX - centerX) * anglePerPixel;
     }
-    return 0.0;
+    return 999.0;
   }
 
   void printStatus() {

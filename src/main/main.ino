@@ -58,8 +58,8 @@ void loop() {
   //   delay(200);  // small pause between directions
   // }
 
-  // m.basic_move_with_compass_and_camera(0, speed, camAngle);
-  m.basic_move_with_compass(0, speed);
+  m.basic_move_with_compass_and_camera(0, speed, camAngle);
+  // m.basic_move_with_compass(0, speed);
 
 
 

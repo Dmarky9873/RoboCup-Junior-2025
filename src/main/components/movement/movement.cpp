@@ -89,7 +89,7 @@ void Movement::basic_move_with_compass(double theta, int maxSpeed) {
 
   // 3. Dead-zone and proportional gain
   const double deadzone = 5.0;  // ° within which we consider “on target”
-  const double Kp = 0.7;        // tuning parameter: larger→faster correction
+  const double Kp = 1;        // tuning parameter: larger→faster correction
 
   // 4. Compute rotational correction (zero inside dead-zone)
   double headingCorrection = 0.0;
@@ -143,12 +143,12 @@ void Movement::basic_move_with_compass_and_camera(double theta,
     error = camAngle;
   } else {
     // compute signed compass error to north
-    error = heading;
+    error = -heading;
   }
 
   // 3. Dead-zone and proportional gain
   const double deadzone = 5.0;  // ±5° tolerated as “on target”
-  const double Kp = 0.7;        // tuning: bigger → faster swing back
+  const double Kp = 1;        // tuning: bigger → faster swing back
   double headingCorrection = 0.0;
   if (fabs(error) > deadzone) {
     // Negative sign so positive error → CCW bias, and vice versa
