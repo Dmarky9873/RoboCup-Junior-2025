@@ -16,13 +16,13 @@ void Movement::debug() {
   colorSensor.printReadings();
 }
 
-void Movement::debug_sees_border() {
-  if (colorSensor.isDetected()) {
-    Serial.println("on the border");
-  } else {
-    Serial.println("no border detected");
-  }
-}
+// void Movement::debug_sees_border() {
+//   if (colorSensor.isDetected()) {
+//     Serial.println("on the border");
+//   } else {
+//     Serial.println("no border detected");
+//   }
+// }
 
 void Movement::brake() {
   motor_FR.brake();
@@ -89,7 +89,7 @@ void Movement::basic_move_with_compass(double theta, int maxSpeed) {
 
   // 3. Dead-zone and proportional gain
   const double deadzone = 5.0;  // ° within which we consider “on target”
-  const double Kp = 1;        // tuning parameter: larger→faster correction
+  const double Kp = 0.3;        // tuning parameter: larger→faster correction
 
   // 4. Compute rotational correction (zero inside dead-zone)
   double headingCorrection = 0.0;
@@ -110,7 +110,6 @@ void Movement::basic_move_with_compass(double theta, int maxSpeed) {
   double speeds[4];
   for (int i = 0; i < 4; ++i) {
     speeds[i] = baseSpeeds[i]
-                + spin_index          // your existing rotation input
                 + headingCorrection;  // auto‐correction toward north
   }
 
@@ -167,7 +166,6 @@ void Movement::basic_move_with_compass_and_camera(double theta,
   double speeds[4];
   for (int i = 0; i < 4; ++i) {
     speeds[i] = baseSpeeds[i]
-                + spin_index          // your existing user‐spin input
                 + headingCorrection;  // automatic swing back to net/north
   }
 

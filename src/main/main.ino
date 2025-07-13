@@ -17,16 +17,16 @@ void attack_w_color_sensor() {
 
   float camAngle = camera.calculateRotationAngle();
   float curr_ball_angle = ir.getBallAngle();
-  m.move(curr_ball_angle, speed, false, camAngle);
 
-  float colorDetected = c.isDetected();
+  c.updateReadings();
+  float avoidAngle = c.getAvoidAngle();
 
-  while (colorDetected != -1) {
-    // Serial.println("oob");
-    m.brake();
-    m.move(colorDetected, speed, true, 0);
+  if (avoidAngle != -1) {
+    m.basic_move_with_compass(avoidAngle, speed);
     delay(100);
-    colorDetected = c.isDetected();
+  }
+  else {
+    m.basic_move_with_compass(curr_ball_angle, speed);
   }
 }
 
@@ -42,14 +42,15 @@ void setup() {
 }
 
 void loop() {
-  int speed = 200;
-  float ballAngle = ir.getBallAngle();
+  attack_w_color_sensor();
+  // int speed = 100;
+  // float ballAngle = ir.getBallAngle();
 
-  float camAngle = camera.calculateRotationAngle();
+  // float camAngle = camera.calculateRotationAngle();
 
-  int angles[] = { 0, 180, 45, 225, 90, 270, 135, 315, 180, 0, 225, 45, 270, 90, 315, 135 };
+  // int angles[] = { 0, 180, 45, 225, 90, 270, 135, 315, 180, 0, 225, 45, 270, 90, 315, 135 };
 
-  Serial.println(camAngle);
+  // Serial.println(camAngle);
 
   // for (int i = 0; i < 16; i++) {
   //   m.basic_move_with_compass(angles[i], speed);
@@ -58,12 +59,14 @@ void loop() {
   //   delay(200);  // small pause between directions
   // }
 
-  m.basic_move_with_compass_and_camera(0, speed, camAngle);
+  // m.basic_move_with_compass_and_camera(0, speed, camAngle);
   // m.basic_move_with_compass(0, speed);
+  // c.updateReadings();
+  // Serial.println(c.getAvoidAngle());
+  c.printReadings();
 
-
-
-
-  delay(100);
+  // delay(100);
   // attack_w_color_sensor();
+
+  delay(50);
 }
