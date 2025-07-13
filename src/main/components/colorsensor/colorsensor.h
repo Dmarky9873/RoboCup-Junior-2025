@@ -10,6 +10,7 @@ class ColorSensor {
     void printReadings();
     void updateReadings();
     float getAvoidAngle();
+    void printMappedValues();
 };
 
 #endif

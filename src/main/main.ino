@@ -24,8 +24,7 @@ void attack_w_color_sensor() {
   if (avoidAngle != -1) {
     m.basic_move_with_compass(avoidAngle, speed);
     delay(100);
-  }
-  else {
+  } else {
     m.basic_move_with_compass(curr_ball_angle, speed);
   }
 }
@@ -42,7 +41,7 @@ void setup() {
 }
 
 void loop() {
-  attack_w_color_sensor();
+  // attack_w_color_sensor();
   // int speed = 100;
   // float ballAngle = ir.getBallAngle();
 
@@ -58,12 +57,17 @@ void loop() {
   //   m.brake();
   //   delay(200);  // small pause between directions
   // }
+  c.updateReadings();
+
+  m.basic_move_with_compass(c.getAvoidAngle(), 200);
+  c.printMappedValues();
+  Serial.println(c.getAvoidAngle());
+
 
   // m.basic_move_with_compass_and_camera(0, speed, camAngle);
   // m.basic_move_with_compass(0, speed);
   // c.updateReadings();
   // Serial.println(c.getAvoidAngle());
-  c.printReadings();
 
   // delay(100);
   // attack_w_color_sensor();
