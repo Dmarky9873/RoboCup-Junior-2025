@@ -11,7 +11,7 @@ uint16_t greenValues[numChannels];
 void ColorSensor::init() {
   Wire.begin();
   updateReadings();
-  printReadings();
+  while (analogValues[0] == 0) {}
   for (int i = 0; i < numChannels; i++) {
     greenValues[i] = analogValues[i];
   }
