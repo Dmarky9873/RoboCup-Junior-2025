@@ -6,8 +6,9 @@
 
 Movement m;
 IR ir;
-Compass cmp;
+// Compass cmp;
 Camera camera(70.0);
+ColorSensor c;
 
 void attack_w_color_sensor() {
   int speed = 100;
@@ -23,15 +24,31 @@ void attack_w_color_sensor() {
 void setup() {
   Serial.begin(9600);
   ir.initIR();
-  m.initMovement();
-  cmp.initialize();
+  // m.initMovement();
+  // cmp.initialize();
+  c.init();
+  
 
   camera.initialize();
 }
 
 void loop() {
-  attack_w_color_sensor();
+  // attack_w_color_sensor();
   int speed = 100;
+  c.updateReadings();
+  if(c.getAnalogValues()[0] > 200) {
+    m.basic_move_with_compass(180, 100);
+    Serial.println("on line");
+    delay(500);
+  }
+  else {
+    m.basic_move_with_compass(0, 100);
+    Serial.println("on field");
+  }
+  // Serial.println(c.getAnalogValues()[0]);
+  // c.printReadings();
+  // m.basic_move_with_compass(180, 100);
+  // delay(100);
   // float ballAngle = ir.getBallAngle();
 
   // float camAngle = camera.calculateRotationAngle();

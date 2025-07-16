@@ -5,11 +5,12 @@
 
 class ColorSensor {
 
-  public:
-    void init();
-    void printReadings();
-    void updateReadings();
-    float getAvoidAngle();
+public:
+  void init();
+  void printReadings();
+  void updateReadings();
+  float getAvoidAngle();
+  uint16_t* getAnalogValues();
 
   // private:
   //   int countFront();

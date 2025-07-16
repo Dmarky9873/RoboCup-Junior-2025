@@ -11,6 +11,9 @@ int greenValues[] = {250, 400, 450, 450, 300, 650, 500, 400, 500, 600, 400, 250,
 void ColorSensor::init() {
   Wire.begin();
 }
+uint16_t* ColorSensor::getAnalogValues() {
+  return analogValues;
+}
 
 // int ColorSensor::countFront() {
 //   int count = 0;
