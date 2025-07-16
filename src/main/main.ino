@@ -36,15 +36,16 @@ void loop() {
   // attack_w_color_sensor();
   int speed = 100;
   c.updateReadings();
-  if(c.getAnalogValues()[0] > 200) {
-    m.basic_move_with_compass(180, 100);
-    Serial.println("on line");
-    delay(500);
-  }
-  else {
-    m.basic_move_with_compass(0, 100);
-    Serial.println("on field");
-  }
+  // if(c.getAnalogValues()[0] > 200) {
+  //   m.basic_move_with_compass(180, 100);
+  //   Serial.println("on line");
+  //   delay(500);
+  // }
+  // else {
+  //   m.basic_move_with_compass(0, 100);
+  //   Serial.println("on field");
+  // }
+  c.printReadings();
   // Serial.println(c.getAnalogValues()[0]);
   // c.printReadings();
   // m.basic_move_with_compass(180, 100);
