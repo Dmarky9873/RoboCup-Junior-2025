@@ -22,7 +22,7 @@ class Movement {
 
   private:
     Compass compass;
-    ColorSensor colorSensor;
+    ColorSensor c;
 
     // 1
     // Motor motor_BR{6, 5}; 

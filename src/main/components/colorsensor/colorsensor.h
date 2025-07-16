@@ -10,6 +10,12 @@ class ColorSensor {
     void printReadings();
     void updateReadings();
     float getAvoidAngle();
+
+  // private:
+  //   int countFront();
+  //   int countRight();
+  //   int countBack();
+  //   int countLeft();
 };
 
 #endif

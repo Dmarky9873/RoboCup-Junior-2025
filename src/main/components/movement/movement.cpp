@@ -1,11 +1,13 @@
 #include <cmath>  // for fabs(), isnan()
 #include "WString.h"
 #include "movement.h"
+#include "../colorsensor/colorsensor.h"
+#include "../colorsensor/colorsensor.cpp"
 #include <math.h>
 
 void Movement::initMovement() {
   compass.initialize();
-  colorSensor.init();
+  c.init();
 }
 
 bool Movement::isBetween(int lower, int upper, int x) {
@@ -13,7 +15,8 @@ bool Movement::isBetween(int lower, int upper, int x) {
 }
 
 void Movement::debug() {
-  colorSensor.printReadings();
+  c.updateReadings();
+  c.printReadings();
 }
 
 // void Movement::debug_sees_border() {
@@ -77,6 +80,14 @@ void Movement::rotate_motor(int speed, String motor) {
 // }
 
 void Movement::basic_move_with_compass(double theta, int maxSpeed) {
+
+  c.updateReadings();
+  c.printReadings();
+  float avoidAngle = c.getAvoidAngle();
+  Serial.println(avoidAngle);
+  if (avoidAngle != -1) {
+    basic_move_with_compass(avoidAngle, 200);
+  }
 
   if (theta == -1) {
     brake();
@@ -147,7 +158,7 @@ void Movement::basic_move_with_compass_and_camera(double theta,
 
   // 3. Dead-zone and proportional gain
   const double deadzone = 5.0;  // ±5° tolerated as “on target”
-  const double Kp = 1;        // tuning: bigger → faster swing back
+  const double Kp = 0.3;        // tuning: bigger → faster swing back
   double headingCorrection = 0.0;
   if (fabs(error) > deadzone) {
     // Negative sign so positive error → CCW bias, and vice versa
