@@ -4,7 +4,6 @@
 
 #include "../motor/motor.cpp"
 #include "../compass/compass.cpp"
-#include "../colorsensor/colorsensor.h"
 
 class Movement {
 
@@ -22,7 +21,6 @@ class Movement {
 
   private:
     Compass compass;
-    ColorSensor c;
 
     // 1
     // Motor motor_BR{6, 5}; 

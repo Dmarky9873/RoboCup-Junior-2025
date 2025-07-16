@@ -1,13 +1,10 @@
 #include <cmath>  // for fabs(), isnan()
 #include "WString.h"
 #include "movement.h"
-#include "../colorsensor/colorsensor.h"
-#include "../colorsensor/colorsensor.cpp"
 #include <math.h>
 
 void Movement::initMovement() {
   compass.initialize();
-  c.init();
 }
 
 bool Movement::isBetween(int lower, int upper, int x) {
@@ -15,8 +12,7 @@ bool Movement::isBetween(int lower, int upper, int x) {
 }
 
 void Movement::debug() {
-  c.updateReadings();
-  c.printReadings();
+  
 }
 
 // void Movement::debug_sees_border() {
@@ -81,13 +77,10 @@ void Movement::rotate_motor(int speed, String motor) {
 
 void Movement::basic_move_with_compass(double theta, int maxSpeed) {
 
-  c.updateReadings();
-  c.printReadings();
-  float avoidAngle = c.getAvoidAngle();
-  Serial.println(avoidAngle);
-  if (avoidAngle != -1) {
-    basic_move_with_compass(avoidAngle, 200);
-  }
+  // Serial.println(avoidAngle);
+  // if (avoidAngle != -1) {
+  //   basic_move_with_compass(avoidAngle, 200);
+  // }
 
   if (theta == -1) {
     brake();
@@ -100,7 +93,7 @@ void Movement::basic_move_with_compass(double theta, int maxSpeed) {
 
   // 3. Dead-zone and proportional gain
   const double deadzone = 5.0;  // ° within which we consider “on target”
-  const double Kp = 0.3;        // tuning parameter: larger→faster correction
+  const double Kp = 0.5;        // tuning parameter: larger→faster correction
 
   // 4. Compute rotational correction (zero inside dead-zone)
   double headingCorrection = 0.0;
@@ -158,11 +151,20 @@ void Movement::basic_move_with_compass_and_camera(double theta,
 
   // 3. Dead-zone and proportional gain
   const double deadzone = 5.0;  // ±5° tolerated as “on target”
-  const double Kp = 0.3;        // tuning: bigger → faster swing back
+  const double Kp = 0.5;        // tuning: bigger → faster swing back
   double headingCorrection = 0.0;
   if (fabs(error) > deadzone) {
     // Negative sign so positive error → CCW bias, and vice versa
     headingCorrection = Kp * error;
+  }
+
+  // catching ball
+  if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta)) {
+    if (theta <= 180) {
+      theta = theta + 10;
+    } else {
+      theta = theta - 10;
+    }
   }
 
   // 4. Compute your original translation wheel speeds

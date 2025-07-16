@@ -2,27 +2,45 @@
 #include "./components/IR/IR.cpp"
 #include "./components/movement/movement.h"
 #include "./components/movement/movement.cpp"
+#include "./components/colorsensor/colorsensor.h"
+#include "./components/colorsensor/colorsensor.cpp"
 #include "./components/camera/camera.h"
 
 Movement m;
 IR ir;
+ColorSensor c;
 Compass cmp;
 Camera camera(70.0);
 
 void attack_w_color_sensor() {
-  int speed = 100;
+  int speed = 125;
 
   float camAngle = camera.calculateRotationAngle();
   float curr_ball_angle = ir.getBallAngle();
 
-  m.basic_move_with_compass(curr_ball_angle, speed);
-  delay(50);
+  c.updateReadings();
+  Serial.println("green:");
+  c.printGreenValues();
+  Serial.println("readings:");
+  c.printReadings();
+
+  float avoidAngle = c.getAvoidAngle();
+  if (avoidAngle != -1) {
+    m.brake();
+    delay(100);
+    m.basic_move_with_compass(avoidAngle, speed);
+    delay(500);
+  }
+  else {
+    m.basic_move_with_compass(curr_ball_angle, speed);
+  }
 }
 
 
 void setup() {
   Serial.begin(9600);
   ir.initIR();
+  c.init();
   m.initMovement();
   cmp.initialize();
 
@@ -31,7 +49,7 @@ void setup() {
 
 void loop() {
   attack_w_color_sensor();
-  int speed = 100;
+  // int speed = 100;
   // float ballAngle = ir.getBallAngle();
 
   // float camAngle = camera.calculateRotationAngle();
@@ -49,7 +67,6 @@ void loop() {
 
   // m.basic_move_with_compass_and_camera(0, speed, camAngle);
   // m.basic_move_with_compass(0, speed);
-  // c.updateReadings();
   // Serial.println(c.getAvoidAngle());
   // m.rotate_motor(speed, "BR");
 
