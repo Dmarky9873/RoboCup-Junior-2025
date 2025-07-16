@@ -16,6 +16,9 @@ void ColorSensor::init() {
     greenValues[i] = analogValues[i];
   }
 }
+uint16_t* ColorSensor::getAnalogValues() {
+  return analogValues;
+}
 
 int ColorSensor::countFront() {
   int count = 0;

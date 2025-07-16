@@ -4,13 +4,13 @@
 #include <Adafruit_MCP3008.h>
 
 class ColorSensor {
-
   public:
     void init();
     void printReadings();
     void printGreenValues();
     void updateReadings();
     float getAvoidAngle();
+    uint16_t* getAnalogValues();
 
   private:
     int countFront();

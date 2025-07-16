@@ -77,11 +77,6 @@ void Movement::rotate_motor(int speed, String motor) {
 
 void Movement::basic_move_with_compass(double theta, int maxSpeed) {
 
-  // Serial.println(avoidAngle);
-  // if (avoidAngle != -1) {
-  //   basic_move_with_compass(avoidAngle, 200);
-  // }
-
   if (theta == -1) {
     brake();
     return;
