@@ -133,12 +133,13 @@ void Movement::basic_move_with_compass(double theta, int maxSpeed) {
 void Movement::basic_move_with_compass_and_camera(double theta,
                                                   int maxSpeed,
                                                   float camAngle) {
-  theta += 180; // This needs to be commented out for bot #2
 
   if (theta == -1) {
     brake();
     return;
   }
+  
+  theta += 180; // This needs to be commented out for bot #2
 
   // 1. Read current heading [0,360) relative to north
   float heading = compass.readCompass();

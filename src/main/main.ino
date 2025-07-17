@@ -29,7 +29,7 @@ void attack_w_color_sensor() {
   c.printReadings();
 
   float avoidAngle = c.getAvoidAngle();
-  Serial.println(avoidAngle);
+  Serial.println(curr_ball_angle);
 
   // Serial.println("green:");
   // c.printGreenValues();
