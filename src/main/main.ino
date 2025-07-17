@@ -13,7 +13,7 @@ Compass cmp;
 Camera camera(70.0);
 
 void attack_w_color_sensor() {
-  int speed = 100;
+  int speed = 80;
  
   c.updateReadings();
   ir.updateReadings();
@@ -39,8 +39,8 @@ void attack_w_color_sensor() {
   // m.basic_move_with_compass(curr_ball_angle, speed);
 
   if (avoidAngle != -1) {
-    m.basic_move_with_compass(avoidAngle, 175);
-    delay(200);
+    m.basic_move_with_compass(avoidAngle, speed + 40);
+    delay(300);
     Serial.println("oob");
   }
   else {
@@ -56,6 +56,7 @@ void setup() {
   m.initMovement();
   cmp.initialize();
   c.init();
+  pinMode(40, INPUT);
 
   camera.initialize();
 }

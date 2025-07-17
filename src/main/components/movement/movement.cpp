@@ -103,9 +103,9 @@ void Movement::basic_move_with_compass(double theta, int maxSpeed) {
   // catching ball
   if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta)) {
     if (theta <= 180) {
-      theta = theta + 40;
+      theta = theta + 30;
     } else {
-      theta = theta - 40;
+      theta = theta - 30;
     }
   }
 

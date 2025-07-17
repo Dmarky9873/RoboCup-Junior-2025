@@ -35,7 +35,7 @@ private:
   // Motor motor_FL{7, 8};
 
   bool isBetween(int lower, int upper, int x);
-  const unsigned int COMPASS_BUFF = 5;
+  const unsigned int COMPASS_BUFF = 8;
   float spin_index = 0;
 };
 
