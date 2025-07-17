@@ -20,6 +20,14 @@ void attack_w_color_sensor() {
 
   float camAngle = camera.calculateRotationAngle();
   float curr_ball_angle = ir.getBallAngle();
+  Serial.println(curr_ball_angle);
+
+  c.updateReadings();
+  Serial.println("green:");
+  c.printGreenValues();
+  Serial.println("readings:");
+  c.printReadings();
+
   float avoidAngle = c.getAvoidAngle();
 
   // Serial.println("green:");
@@ -55,7 +63,6 @@ void setup() {
 }
 
 void loop() {
-
   attack_w_color_sensor();
   // int speed = 100;
   // attack_w_color_sensor();

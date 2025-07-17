@@ -12,7 +12,6 @@ bool Movement::isBetween(int lower, int upper, int x) {
 }
 
 void Movement::debug() {
-  
 }
 
 // void Movement::debug_sees_border() {
@@ -77,6 +76,8 @@ void Movement::rotate_motor(int speed, String motor) {
 
 void Movement::basic_move_with_compass(double theta, int maxSpeed) {
 
+  theta += 180;
+
   if (theta == -1) {
     brake();
     return;
@@ -132,6 +133,8 @@ void Movement::basic_move_with_compass(double theta, int maxSpeed) {
 void Movement::basic_move_with_compass_and_camera(double theta,
                                                   int maxSpeed,
                                                   float camAngle) {
+  theta += 180; // This needs to be commented out for bot #2
+
   if (theta == -1) {
     brake();
     return;
@@ -150,7 +153,7 @@ void Movement::basic_move_with_compass_and_camera(double theta,
     error = camAngle;
   } else {
     // compute signed compass error to north
-    error = -heading;
+    error = heading; // heading needs to be negative for bot #2, and positive for bot #1
   }
 
   // 3. Dead-zone and proportional gain

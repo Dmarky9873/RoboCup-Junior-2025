@@ -21,7 +21,7 @@ uint16_t* ColorSensor::getAnalogValues() {
 }
 
 void ColorSensor::updateReadings() {
-  Wire.requestFrom(slaveAddress, numChannels * 2); // 32 bytes total
+  Wire.requestFrom(slaveAddress, numChannels * 2);  // 32 bytes total
 
   int index = 0;
   while (Wire.available() >= 2 && index < numChannels) {
@@ -34,7 +34,7 @@ void ColorSensor::updateReadings() {
 void ColorSensor::printReadings() {
   for (int i = 0; i < numChannels; i++) {
     Serial.print(i);
-    Serial.print(": "); 
+    Serial.print(": ");
     Serial.print(analogValues[i]);
     Serial.print("\t");
   }
@@ -44,7 +44,7 @@ void ColorSensor::printReadings() {
 void ColorSensor::printGreenValues() {
   for (int i = 0; i < numChannels; i++) {
     Serial.print(i);
-    Serial.print(": "); 
+    Serial.print(": ");
     Serial.print(greenValues[i]);
     Serial.print("\t");
   }
