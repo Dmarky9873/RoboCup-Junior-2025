@@ -23,7 +23,7 @@ const int nudgeDuration = 500;
 void returnGoalieToWhiteLine() {
   while (c.getAvoidAngle() != 0) {
     c.updateReadings();
-    m.basic_move_with_compass(180, 90);
+    m.basic_move_with_compass(180, 80);
   }
   m.basic_move_with_compass(0, 120);
   delay(200);
@@ -35,7 +35,6 @@ void nudge_forward_and_back() {
   delay(nudgeDuration);
   returnGoalieToWhiteLine();
   m.brake();
-  pinMode(40, INPUT);
 }
 
 void attack_w_color_sensor() {
@@ -83,6 +82,7 @@ void setup() {
   c.init();
 
   camera.initialize();
+  pinMode(40, INPUT);
 }
 
 void loop() {
@@ -109,7 +109,7 @@ void loop() {
     ballFrontStartTime = 0;
     m.basic_move_with_compass(c.getAvoidAngle(), 150);
     resetBackTimeStart = millis();
-    delay(200);
+    delay(400);
     return;
   }
 
