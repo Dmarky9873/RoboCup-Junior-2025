@@ -82,10 +82,12 @@ void Movement::basic_move_with_compass(double theta, int maxSpeed) {
     return;
   }
 
+  theta += 180;
+
 
   // 1. Read current heading (° in [0,360)) relative to north
   float heading = compass.readCompass();
-  double error = heading;  // heading needs to be negative for bot #2, and positive for bot #1
+  double error = -heading;  // heading needs to be negative for bot #2, and positive for bot #1
 
 
   // 3. Dead-zone and proportional gain
@@ -204,6 +206,7 @@ void Movement::move(double theta, int maxSpeed, bool avoid, float cameraRotation
     brake();
     return;
   }
+
 
   float reading = compass.readCompass();
   float intendedDirection = theta;

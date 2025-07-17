@@ -98,7 +98,8 @@ void loop() {
   bool ballInFront = (currBallAngle > 345) || (currBallAngle < 15);
   unsigned long resetBackTime = millis();
   c.updateReadings();
-  Serial.println(c.getAvoidAngle());
+  // Serial.println(c.getAvoidAngle());
+  Serial.println(currBallAngle);
   if (resetBackTimeStart == 0) {
     resetBackTimeStart = millis();
   }
@@ -155,6 +156,8 @@ void loop() {
   }
 
   lastBallAngle = currBallAngle;
+
+  // m.basic_move_with_compass(0, 100);
   // int speed = 100;
   // attack_w_color_sensor();
   // int speed = 100;
