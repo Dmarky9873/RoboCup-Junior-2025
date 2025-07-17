@@ -74,7 +74,7 @@ void Movement::rotate_motor(int speed, String motor) {
 
 // }
 
-void Movement::basic_move_with_compass(double theta, int maxSpeed) {
+void Movement::basic_move_with_compass(double theta, int maxSpeed, bool isCatching) {
 
 
   if (theta == -1) {
@@ -101,7 +101,7 @@ void Movement::basic_move_with_compass(double theta, int maxSpeed) {
   }
 
   // catching ball
-  if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta)) {
+  if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta) && isCatching) {
     if (theta <= 180) {
       theta = theta + 40;
     } else {
@@ -129,6 +129,16 @@ void Movement::basic_move_with_compass(double theta, int maxSpeed) {
   motor_BR.spin(speeds[1]);
   motor_BL.spin(speeds[2]);
   motor_FL.spin(speeds[3]);
+
+  Serial.print("TR: ");
+  Serial.println(speeds[0]);
+  Serial.print("BR: ");
+  Serial.println(speeds[1]);
+  Serial.print("TL: ");
+  Serial.println(speeds[2]);
+  Serial.print("BL ");
+  Serial.println(speeds[3]);
+  Serial.println();
 }
 
 
@@ -171,9 +181,9 @@ void Movement::basic_move_with_compass_and_camera(double theta,
   // catching ball
   if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta)) {
     if (theta <= 180) {
-      theta = theta + 25;
+      theta = theta + 40;
     } else {
-      theta = theta - 25;
+      theta = theta - 40;
     }
   }
 
