@@ -29,6 +29,7 @@ void attack_w_color_sensor() {
   c.printReadings();
 
   float avoidAngle = c.getAvoidAngle();
+  Serial.println(avoidAngle);
 
   // Serial.println("green:");
   // c.printGreenValues();
@@ -40,12 +41,12 @@ void attack_w_color_sensor() {
   if (avoidAngle != -1) {
     m.brake();
     delay(100);
-    m.basic_move_with_compass(avoidAngle, speed);
+    m.basic_move_with_compass_and_camera(avoidAngle, speed, 0);
     delay(400);
   }
   else {
-    m.basic_move_with_compass(curr_ball_angle, speed);
-    // m.basic_move_with_compass_and_camera(curr_ball_angle, speed, camAngle);
+    // m.basic_move_with_compass(curr_ball_angle, speed);
+    m.basic_move_with_compass_and_camera(curr_ball_angle, speed, 0);
   }
 }
 
@@ -64,6 +65,7 @@ void setup() {
 
 void loop() {
   attack_w_color_sensor();
+  // m.basic_move_with_compass_and_camera(0, 200, 0);
   // int speed = 100;
   // attack_w_color_sensor();
   // int speed = 100;
