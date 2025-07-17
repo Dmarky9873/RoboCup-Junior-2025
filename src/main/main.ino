@@ -12,6 +12,7 @@ ColorSensor c;
 Compass cmp;
 Camera camera(70.0);
 unsigned long ballFrontStartTime = 0;
+unsigned long resetBackTimeStart = 0;
 float lastBallAngle = -1;
 const int frontThresholdLow = 0;
 const int frontThresholdHigh = 15;
@@ -25,7 +26,7 @@ void returnGoalieToWhiteLine() {
     m.basic_move_with_compass(180, 90);
   }
   m.basic_move_with_compass(0, 120);
-  delay(300);
+  delay(200);
 }
 
 
@@ -89,15 +90,31 @@ void loop() {
   // Serial.println(millis() - ballFrontStartTime);
   // Serial.println(currBallAngle);
   bool ballInFront = (currBallAngle > 345) || (currBallAngle < 15);
+  unsigned long resetBackTime = millis();
   c.updateReadings();
   Serial.println(c.getAvoidAngle());
+  if (resetBackTimeStart == 0) {
+    resetBackTimeStart = millis();
+  }
   // Serial.println(ballInFront);
+
+  if (c.getAvoidAngle() != -1) {
+    ballFrontStartTime = 0;
+    m.basic_move_with_compass(c.getAvoidAngle(), 150);
+    delay(200);
+    return;
+  }
 
   // If the ball isn't seen, reset timer and brake
   if (currBallAngle == -1) {
     ballFrontStartTime = 0;
     m.brake();
     return;
+  }
+
+  if (resetBackTime - resetBackTimeStart >= 5000) {
+    returnGoalieToWhiteLine();
+    resetBackTimeStart = millis();
   }
 
   // Check if ball is in front zone [0,15] or [345,360]
@@ -121,9 +138,9 @@ void loop() {
     ballFrontStartTime = 0;
 
     if (currBallAngle > 15 && currBallAngle < 180) {
-      m.basic_move_with_compass(90, 100);
+      m.basic_move_with_compass(90, 120);
     } else if (currBallAngle < 345 && currBallAngle >= 180) {
-      m.basic_move_with_compass(270, 100);
+      m.basic_move_with_compass(270, 120);
     } else {
       m.brake();
     }

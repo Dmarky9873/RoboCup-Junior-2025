@@ -89,7 +89,7 @@ void Movement::basic_move_with_compass(double theta, int maxSpeed) {
 
 
   // 3. Dead-zone and proportional gain
-  const double deadzone = 5.0;  // ° within which we consider “on target”
+  const double deadzone = 2.0;  // ° within which we consider “on target”
   const double Kp = 0.5;        // tuning parameter: larger→faster correction
 
   // 4. Compute rotational correction (zero inside dead-zone)
