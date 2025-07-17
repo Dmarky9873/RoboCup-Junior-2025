@@ -16,7 +16,7 @@ public:
   void debug_sees_border();
   bool is_on_border();
   void rotate_motor(int speed, String motor);
-  void basic_move_with_compass(double theta, int maxSpeed);
+  void basic_move_with_compass(double theta, int maxSpeed, bool isCatching);
   void basic_move_with_compass_and_camera(double theta, int maxSpeed, float camAngle);
 
 private:
@@ -35,7 +35,7 @@ private:
   // Motor motor_FL{7, 8};
 
   bool isBetween(int lower, int upper, int x);
-  const unsigned int COMPASS_BUFF = 8;
+  const unsigned int COMPASS_BUFF = 15;
   float spin_index = 0;
 };
 

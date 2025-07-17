@@ -39,13 +39,13 @@ void attack_w_color_sensor() {
   // m.basic_move_with_compass(curr_ball_angle, speed);
 
   if (avoidAngle != -1) {
-    m.basic_move_with_compass(avoidAngle, speed + 40);
+    m.basic_move_with_compass(avoidAngle, speed + 40, false);
     delay(300);
     Serial.println("oob");
   }
   else {
     // m.basic_move_with_compass(curr_ball_angle, speed);
-    m.basic_move_with_compass(curr_ball_angle, speed);
+    m.basic_move_with_compass(curr_ball_angle, speed, true);
   }
 }
 
@@ -62,7 +62,12 @@ void setup() {
 }
 
 void loop() {
-  attack_w_color_sensor();
+  if (digitalRead(40) == LOW) {
+    m.brake();
+  }
+  else {
+    attack_w_color_sensor();
+  }
   // m.basic_move_with_compass_and_camera(0, 200, 0);
   // int speed = 100;
   // attack_w_color_sensor();

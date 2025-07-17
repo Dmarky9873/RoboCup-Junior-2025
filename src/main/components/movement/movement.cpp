@@ -74,8 +74,7 @@ void Movement::rotate_motor(int speed, String motor) {
 
 // }
 
-void Movement::basic_move_with_compass(double theta, int maxSpeed) {
-
+void Movement::basic_move_with_compass(double theta, int maxSpeed, bool isCatching) {
 
   if (theta == -1) {
     brake();
@@ -101,7 +100,7 @@ void Movement::basic_move_with_compass(double theta, int maxSpeed) {
   }
 
   // catching ball
-  if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta)) {
+  if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta) && isCatching) {
     if (theta <= 180) {
       theta = theta + 30;
     } else {
