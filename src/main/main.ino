@@ -101,6 +101,7 @@ void loop() {
   if (c.getAvoidAngle() != -1) {
     ballFrontStartTime = 0;
     m.basic_move_with_compass(c.getAvoidAngle(), 150);
+    resetBackTimeStart = millis();
     delay(200);
     return;
   }
@@ -109,6 +110,7 @@ void loop() {
   if (currBallAngle == -1) {
     ballFrontStartTime = 0;
     m.brake();
+    resetBackTimeStart = millis();
     return;
   }
 
