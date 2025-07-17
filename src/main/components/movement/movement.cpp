@@ -76,16 +76,18 @@ void Movement::rotate_motor(int speed, String motor) {
 
 void Movement::basic_move_with_compass(double theta, int maxSpeed) {
 
-  theta += 180;
 
   if (theta == -1) {
     brake();
     return;
   }
 
+  theta += 180;  // This needs to be commented out for bot #2
+
   // 1. Read current heading (° in [0,360)) relative to north
   float heading = compass.readCompass();
-  double error = heading;
+  double error = -heading;  // heading needs to be negative for bot #2, and positive for bot #1
+
 
   // 3. Dead-zone and proportional gain
   const double deadzone = 5.0;  // ° within which we consider “on target”
@@ -138,8 +140,8 @@ void Movement::basic_move_with_compass_and_camera(double theta,
     brake();
     return;
   }
-  
-  theta += 180; // This needs to be commented out for bot #2
+
+  theta += 180;  // This needs to be commented out for bot #2
 
   // 1. Read current heading [0,360) relative to north
   float heading = compass.readCompass();
@@ -154,7 +156,7 @@ void Movement::basic_move_with_compass_and_camera(double theta,
     error = camAngle;
   } else {
     // compute signed compass error to north
-    error = heading; // heading needs to be negative for bot #2, and positive for bot #1
+    error = heading;  // heading needs to be negative for bot #2, and positive for bot #1
   }
 
   // 3. Dead-zone and proportional gain

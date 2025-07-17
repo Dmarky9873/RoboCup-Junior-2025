@@ -4,7 +4,7 @@
 const uint8_t slaveAddress = 0x08;
 const uint8_t numChannels = 16;
 uint16_t analogValues[numChannels];
-int buffer = 75;
+int buffer = 150;
 uint16_t greenValues[numChannels];
 // int greenValues[] = {250, 400, 450, 450, 300, 650, 500, 400, 500, 600, 400, 250, 200, 250, 200, 400};
 
@@ -53,26 +53,23 @@ void ColorSensor::printGreenValues() {
 
 float ColorSensor::getAvoidAngle() {
 
-  int delta = analogValues[0] - greenValues[0];
-  Serial.println(delta);
-
   // front
-  if (analogValues[15] >= greenValues[15] + buffer || analogValues[0] >= greenValues[0] + buffer || analogValues[1] >= greenValues[1] + buffer) {
+  if (analogValues[0] >= greenValues[1] + buffer) {
     return 180;
   }
 
   // left
-  if (analogValues[3] >= greenValues[3] + buffer || analogValues[4] >= greenValues[4] + buffer || analogValues[5] >= greenValues[5] + buffer) {
+  if (analogValues[4] >= greenValues[4] + buffer) {
     return 90;
   }
 
   // back
-  if (analogValues[7] >= greenValues[7] + buffer || analogValues[8] >= greenValues[8] + buffer || analogValues[9] >= greenValues[9] + buffer) {
+  if (analogValues[8] >= greenValues[8] + buffer) {
     return 0;
   }
 
   // right
-  if (analogValues[11] >= greenValues[11] + buffer || analogValues[12] >= greenValues[12] + buffer || analogValues[13] >= greenValues[13] + buffer) {
+  if (analogValues[12] >= greenValues[12] + buffer) {
     return 270;
   }
 

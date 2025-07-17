@@ -41,12 +41,13 @@ void attack_w_color_sensor() {
   if (avoidAngle != -1) {
     m.brake();
     delay(100);
-    m.basic_move_with_compass_and_camera(avoidAngle, speed, 0);
+    m.basic_move_with_compass(avoidAngle, speed);
     delay(400);
+    Serial.println("oob");
   }
   else {
     // m.basic_move_with_compass(curr_ball_angle, speed);
-    m.basic_move_with_compass_and_camera(curr_ball_angle, speed, 0);
+    m.basic_move_with_compass(curr_ball_angle, speed);
   }
 }
 
