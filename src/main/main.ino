@@ -35,6 +35,7 @@ void nudge_forward_and_back() {
   delay(nudgeDuration);
   returnGoalieToWhiteLine();
   m.brake();
+  pinMode(40, INPUT);
 }
 
 void attack_w_color_sensor() {
@@ -85,6 +86,11 @@ void setup() {
 }
 
 void loop() {
+  if(digitalRead(40) == LOW) {
+    m.brake();
+    return;
+  }
+
   ir.updateReadings();
   float currBallAngle = ir.getBallAngle();
   // Serial.println(millis() - ballFrontStartTime);
