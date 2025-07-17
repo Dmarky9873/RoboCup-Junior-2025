@@ -13,26 +13,31 @@ Compass cmp;
 Camera camera(70.0);
 
 void attack_w_color_sensor() {
-  int speed = 125;
+  int speed = 100;
+
+  c.updateReadings();
+  ir.updateReadings();
 
   float camAngle = camera.calculateRotationAngle();
   float curr_ball_angle = ir.getBallAngle();
-
-  c.updateReadings();
-  Serial.println("green:");
-  c.printGreenValues();
-  Serial.println("readings:");
-  c.printReadings();
-
   float avoidAngle = c.getAvoidAngle();
+
+  // Serial.println("green:");
+  // c.printGreenValues();
+  // Serial.println("readings:");
+  // c.printReadings();
+
+  // m.basic_move_with_compass(curr_ball_angle, speed);
+
   if (avoidAngle != -1) {
     m.brake();
     delay(100);
-    m.basic_move_with_compass_and_camera(avoidAngle, speed, camAngle);
-    delay(500);
+    m.basic_move_with_compass(avoidAngle, speed);
+    delay(400);
   }
   else {
-    m.basic_move_with_compass_and_camera(curr_ball_angle, speed, camAngle);
+    m.basic_move_with_compass(curr_ball_angle, speed);
+    // m.basic_move_with_compass_and_camera(curr_ball_angle, speed, camAngle);
   }
 }
 
@@ -86,6 +91,9 @@ void loop() {
 
   // m.basic_move_with_compass_and_camera(0, speed, camAngle);
   // m.basic_move_with_compass(0, speed);
+  // delay(400);
+  // m.basic_move_with_compass(180, speed);
+  // delay(400);
   // Serial.println(c.getAvoidAngle());
   // m.rotate_motor(speed, "BR");
 

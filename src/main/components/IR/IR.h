@@ -4,10 +4,11 @@
 class IR {
   public:
 
-    float* getReadingsArr();
-    double* getPWsArr();
-    void printReadingsArr();
-    void printPWsArr();
+    // float* getReadingsArr();
+    // double* getPWsArr();
+    // void printReadingsArr();
+    // void printPWsArr();
+    void updateReadings();
     void initIR();
     float getBallAngle();
 

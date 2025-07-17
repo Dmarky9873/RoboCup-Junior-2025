@@ -97,6 +97,15 @@ void Movement::basic_move_with_compass(double theta, int maxSpeed) {
     headingCorrection = -Kp * error;
   }
 
+  // catching ball
+  if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta)) {
+    if (theta <= 180) {
+      theta = theta + 40;
+    } else {
+      theta = theta - 40;
+    }
+  }
+
   // 5. Existing translational wheel speeds (sinusoidal mixing)
   double baseSpeeds[4] = {
     maxSpeed * sin(((theta - 90 + 40) * M_PI) / 180.0),  // FR
@@ -156,9 +165,9 @@ void Movement::basic_move_with_compass_and_camera(double theta,
   // catching ball
   if (!isBetween(0 - COMPASS_BUFF, 0 + COMPASS_BUFF, theta)) {
     if (theta <= 180) {
-      theta = theta + 10;
+      theta = theta + 25;
     } else {
-      theta = theta - 10;
+      theta = theta - 25;
     }
   }
 

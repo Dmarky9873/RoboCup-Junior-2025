@@ -9,14 +9,9 @@ class ColorSensor {
     void printReadings();
     void printGreenValues();
     void updateReadings();
+    float getWarningAvoidAngle() ;
     float getAvoidAngle();
     uint16_t* getAnalogValues();
-
-  private:
-    int countFront();
-    int countRight();
-    int countBack();
-    int countLeft();
 };
 
 #endif

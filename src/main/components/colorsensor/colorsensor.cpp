@@ -4,7 +4,7 @@
 const uint8_t slaveAddress = 0x08;
 const uint8_t numChannels = 16;
 uint16_t analogValues[numChannels];
-int buffer = 150;
+int buffer = 75;
 uint16_t greenValues[numChannels];
 // int greenValues[] = {250, 400, 450, 450, 300, 650, 500, 400, 500, 600, 400, 250, 200, 250, 200, 400};
 
@@ -18,67 +18,6 @@ void ColorSensor::init() {
 }
 uint16_t* ColorSensor::getAnalogValues() {
   return analogValues;
-}
-
-int ColorSensor::countFront() {
-  int count = 0;
-  if (analogValues[15] > greenValues[15] + buffer) {
-    count++;
-  }
-  if (analogValues[0] > greenValues[0] + buffer) {
-    count++;
-  }
-  if (analogValues[1] > greenValues[1] + buffer) {
-    count++;
-  }
-
-  return count;
-}
-
-
-int ColorSensor::countRight() {
-  int count = 0;
-  if (analogValues[3] > greenValues[3] + buffer) {
-    count++;
-  }
-  if (analogValues[4] > greenValues[4] + buffer) {
-    count++;
-  }
-  if (analogValues[5] > greenValues[5] + buffer) {
-    count++;
-  }
-
-  return count;
-}
-
-int ColorSensor::countBack() {
-  int count = 0;
-  if (analogValues[7] > greenValues[7] + buffer) {
-    count++;
-  }
-  if (analogValues[8] > greenValues[8] + buffer) {
-    count++;
-  }
-  if (analogValues[9] > greenValues[9] + buffer) {
-    count++;
-  }
-
-  return count;
-}
-
-int ColorSensor::countLeft() {
-  int count = 0;
-  if (analogValues[11] > greenValues[11] + buffer) {
-    count++;
-  }
-  if (analogValues[12] > greenValues[12] + buffer) {
-    count++;
-  }
-  if (analogValues[13] > greenValues[13] + buffer) {
-    count++;
-  }
-
-  return count;
 }
 
 void ColorSensor::updateReadings() {
@@ -114,51 +53,30 @@ void ColorSensor::printGreenValues() {
 
 float ColorSensor::getAvoidAngle() {
 
-  int result = -1;
+  int delta = analogValues[0] - greenValues[0];
+  Serial.println(delta);
 
-  // front detection
-  if (countFront() >= 1) {
-    result = 180;
-  }
-  if ((analogValues[14] > greenValues[14] + buffer || analogValues[13] > greenValues[13] + buffer) 
-  && (analogValues[2] > greenValues[2] + buffer || analogValues[3] > greenValues[3] + buffer)) 
-  {
+  // front
+  if (analogValues[15] >= greenValues[15] + buffer || analogValues[0] >= greenValues[0] + buffer || analogValues[1] >= greenValues[1] + buffer) {
     return 180;
   }
 
-  // right detection
-  if (countRight() >= 1) {
-    result = 90;
-  }
-  if ((analogValues[1] > greenValues[1] + buffer || analogValues[2] > greenValues[2] + buffer) 
-  && (analogValues[6] > greenValues[6] + buffer || analogValues[7] > greenValues[7] + buffer)) 
-  {
-    Serial.println("forced 90");
+  // left
+  if (analogValues[3] >= greenValues[3] + buffer || analogValues[4] >= greenValues[4] + buffer || analogValues[5] >= greenValues[5] + buffer) {
     return 90;
   }
 
-  // back detection
-  if (countBack() >= 1) {
-    result = 0;
-  }
-  if ((analogValues[6] > greenValues[6] + buffer || analogValues[5] > greenValues[5] + buffer) 
-  && (analogValues[10] > greenValues[10] + buffer || analogValues[11] > greenValues[11] + buffer)) {
-    Serial.println("forced 0");
+  // back
+  if (analogValues[7] >= greenValues[7] + buffer || analogValues[8] >= greenValues[8] + buffer || analogValues[9] >= greenValues[9] + buffer) {
     return 0;
   }
 
-  // left detection
-  if (countLeft() >= 1) {
-    result = 270;
-  }
-  if ((analogValues[14] > greenValues[14] + buffer || analogValues[15] > greenValues[15] + buffer)
-  && (analogValues[10] > greenValues[10] + buffer || analogValues[9] > greenValues[9] + buffer)) 
-  {
-    Serial.println("forced 270");
+  // right
+  if (analogValues[11] >= greenValues[11] + buffer || analogValues[12] >= greenValues[12] + buffer || analogValues[13] >= greenValues[13] + buffer) {
     return 270;
   }
 
-  return result;
+  return -1;
 
   // float totalWeight = 0;
   // float weightedSum = 0;
